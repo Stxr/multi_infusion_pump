@@ -1,0 +1,9 @@
+..\obj\alientek.o: ..\EMWIN_DEMO\BITMAP_DISPLAY\ALIENTEK.c
+..\obj\alientek.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\GUI.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\GUI_ConfDefaults.h
+..\obj\alientek.o: ..\EMWIN\STemWin\Config\GUIConf.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\GUI_Type.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\LCD.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\Global.h
+..\obj\alientek.o: ..\EMWIN\STemWin\inc\GUI_Version.h
