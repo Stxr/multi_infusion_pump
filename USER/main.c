@@ -20,6 +20,7 @@
 #include "WM.h"
 #include "DIALOG.h"
 #include "usmart.h"
+#include "image2lcd.h"
 /************************************************
  ALIENTEK MiniSTM32开发板STemWin实验
  STemWin 绘制位图
@@ -39,6 +40,8 @@
  开发记录：
  2016-11-28 测试了从内存和flash读图片，发现所需时间较多
  2016-11-29 测试了触摸对应位置实现不同的指令，测试成功
+ 2016-11-30 试着用emwin储存的办法来减少bmp显示的延时，发现没卵用
+ 2016-12-1 测试了用直接读rgb数据的办法显示图片，希望减少延时，发现还是没卵用，加载速度比解码bmp图片的方法减少了一半。
  测试人：小螃蟹
 ************************************************/
 //任务优先级
@@ -206,19 +209,49 @@ void start_task(void *p_arg)
 //EMWINDEMO任务
 void emwindemo_task(void *pdata){
 	//OS_ERR err;
+//	GUI_MEMDEV_Handle hMem;
 	GUI_PID_STATE touchState;//触摸状态
+	FIL fp;
+	char buff[960];
+	unsigned int num;
+	//buff=(char*)mymalloc(480);
+	f_open(&fp,(const TCHAR*)"1:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//打开文件，将文件句柄放在fp中
+	
 	GUI_SetBkColor(GUI_BLUE);
 	GUI_SetColor(GUI_RED);
 	GUI_CURSOR_Show();
 	GUI_SetFont(&GUI_FontHZ16);
 	GUI_Clear();
-	dispbmpex("0:/SYSTEM/SYSICO/ebook.bmp",0,0,0,1,1);
+	
+	
+	LCD_Scan_Dir(L2R_U2D);//从左到右,从上到下
+	LCD_Set_Window(0,0,240,320);
+	LCD_SetCursor(0,0);//设置光标位置 
+	LCD_WriteRAM_Prepare();   	//开始写入GRAM 
+	
+	for(int y=0;y<160;y++){
+		f_read(&fp,buff,960,(UINT*)&num);//从文件将数据存入数组里,自己会不断的增加
+		for(int i=0;i<960;i+=2){
+			LCD_WR_DATA(image_getcolor(0,(u8*)&buff[i]));
+		}
+		//f_lseek(&fp,fp.fptr+480);//f_read中对num的操作已经可以让系统连续读了，并不需要手工操作
+ }
+	f_close(&fp);
+	for(int i=0;i<10;i++){
+		GUI_DispHexAt(buff[i],0,15+i*15,2);
+	}
+	
+	//myfree(buff);
+	//hMem=GUI_MEMDEV_Create(0,0,240,320);
+	//GUI_MEMDEV_Select(hMem);
+	//dispbmpex("0:/SYSTEM/SYSICO/systemsetting.bmp",0,0,0,1,1);
+	//GUI_MEMDEV_Select(0);
+	//GUI_MEMDEV_CopyToLCDAt(hMem,0,0);
 	GUI_Delay(1000);
 	while(1){
 		GUI_PID_GetState(&touchState);//得到触摸屏的坐标
 //		GUI_DispDecAt(touchState.x,0,10,3);//显示x值
 //		GUI_DispDecAt(touchState.y,0,10+16,3);//显示y值
-		
 		if (touchState.y < 17.9&&touchState.x>191) {
 			GUI_DispStringAt("0", 0, 0);
 		}else if (touchState.y > 109 && touchState.y < 160) {

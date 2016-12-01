@@ -12,3 +12,4 @@
 #define GUI_SUPPORT_MEMDEV            (1)    	//存储设备
 #define GUI_SUPPORT_DEVICES           (1)    	//使用设备指针
 #endif  
+
