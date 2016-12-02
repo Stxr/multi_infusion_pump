@@ -21,6 +21,13 @@
 #include "DIALOG.h"
 #include "usmart.h"
 #include "image2lcd.h"
+
+#define MYCOLOR_TITLE_BACKGROUND 0X00ecedf1
+#define MYCOLOR_TEXT_BACKGROUND 0X00ffffff
+#define MYCOLOR_TITLE_TEXT 0X0040403e
+#define MYCOLOR_LINE  0X00f0f0f0
+#define MYCOLOR_CONTENT_TEXT 0X004a4a4a
+
 /************************************************
  ALIENTEK MiniSTM32开发板STemWin实验
  STemWin 绘制位图
@@ -42,6 +49,7 @@
  2016-11-29 测试了触摸对应位置实现不同的指令，测试成功
  2016-11-30 试着用emwin储存的办法来减少bmp显示的延时，发现没卵用
  2016-12-1 测试了用直接读rgb数据的办法显示图片，希望减少延时，发现还是没卵用，加载速度比解码bmp图片的方法减少了一半。
+ 2016-12-2 测试了直接画出来界面，发现是可行的，就是字体的问题没有解决，中文字符还不能显示
  测试人：小螃蟹
 ************************************************/
 //任务优先级
@@ -91,7 +99,7 @@ CPU_STK LED0_TASK_STK[LED0_STK_SIZE];
 //led0任务
 void led0_task(void *p_arg);
 
-
+void myScreen(void);
 
 
 int main(void)
@@ -212,36 +220,34 @@ void emwindemo_task(void *pdata){
 //	GUI_MEMDEV_Handle hMem;
 	GUI_PID_STATE touchState;//触摸状态
 	FIL fp;
-	char buff[960];
+	char *buff;
 	unsigned int num;
-	//buff=(char*)mymalloc(480);
-	f_open(&fp,(const TCHAR*)"1:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//打开文件，将文件句柄放在fp中
+	buff=(char*)mymalloc(3840);
+	f_open(&fp,(const TCHAR*)"0:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//打开文件，将文件句柄放在fp中
 	
-	GUI_SetBkColor(GUI_BLUE);
-	GUI_SetColor(GUI_RED);
-	GUI_CURSOR_Show();
-	GUI_SetFont(&GUI_FontHZ16);
-	GUI_Clear();
+//	GUI_SetBkColor(GUI_BLUE);
+//	GUI_SetColor(GUI_RED);
+//	GUI_CURSOR_Show();
+//	GUI_SetFont(&GUI_FontHZ16);
+//	GUI_Clear();
 	
+	myScreen();
+//	LCD_Scan_Dir(L2R_U2D);//从左到右,从上到下
+//	LCD_Set_Window(0,0,240,320);
+//	LCD_SetCursor(0,0);//设置光标位置 
+//	LCD_WriteRAM_Prepare();   	//开始写入GRAM 
+//	
+//	for(int y=0;y<40;y++){
+//		f_read(&fp,buff,3840,(UINT*)&num);//从文件将数据存入数组里,自己会不断的增加
+//		for(int i=0;i<3840;i+=2){
+//			LCD_WR_DATA(image_getcolor(0,(u8*)buff+i));
+//		}
+//		//f_lseek(&fp,fp.fptr+480);//f_read中对num的操作已经可以让系统连续读了，并不需要手工操作
+// }
+//	myfree(buff);
+//	f_close(&fp);
 	
-	LCD_Scan_Dir(L2R_U2D);//从左到右,从上到下
-	LCD_Set_Window(0,0,240,320);
-	LCD_SetCursor(0,0);//设置光标位置 
-	LCD_WriteRAM_Prepare();   	//开始写入GRAM 
-	
-	for(int y=0;y<160;y++){
-		f_read(&fp,buff,960,(UINT*)&num);//从文件将数据存入数组里,自己会不断的增加
-		for(int i=0;i<960;i+=2){
-			LCD_WR_DATA(image_getcolor(0,(u8*)&buff[i]));
-		}
-		//f_lseek(&fp,fp.fptr+480);//f_read中对num的操作已经可以让系统连续读了，并不需要手工操作
- }
-	f_close(&fp);
-	for(int i=0;i<10;i++){
-		GUI_DispHexAt(buff[i],0,15+i*15,2);
-	}
-	
-	//myfree(buff);
+
 	//hMem=GUI_MEMDEV_Create(0,0,240,320);
 	//GUI_MEMDEV_Select(hMem);
 	//dispbmpex("0:/SYSTEM/SYSICO/systemsetting.bmp",0,0,0,1,1);
@@ -303,6 +309,32 @@ void led0_task(void *p_arg)
 //		OSTimeDlyHMSM(0,0,0,50,OS_OPT_TIME_PERIODIC,&err);//延时50ms
 //	}
 //}
+void myScreen(void){
+	//GUI_Init();
+	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
+	GUI_Clear();
+	//背景
+	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
+	GUI_ClearRect(0, 109, 240, 320);
+	//横线
+	GUI_SetPenSize(1);
+	GUI_SetColor(MYCOLOR_LINE);
+	GUI_DrawHLine(109, 0, 240);
+	GUI_DrawHLine(160, 0, 240);
+	GUI_DrawHLine(212, 0, 240);
+	GUI_DrawLine(0, 262, 240, 262);
+	//字体
+	GUI_SetColor(MYCOLOR_TITLE_TEXT);
+	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
+	GUI_SetFont(&GUI_Font20_1);
+	GUI_DispStringHCenterAt("System Setting", 120, 51.6);
 
-
+	GUI_SetColor(MYCOLOR_CONTENT_TEXT);
+	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
+	GUI_SetFont(&GUI_Font16B_1);
+	GUI_DispStringHCenterAt("Personal Setting", 120, 137.5-10);
+	GUI_DispStringHCenterAt("System Update", 120, 188.2-10);
+	GUI_DispStringHCenterAt("System Statistics", 120, 239.8-10);
+	GUI_DispStringHCenterAt("About", 120, 293.4-10);
+}	
 

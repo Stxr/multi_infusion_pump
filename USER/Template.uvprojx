@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\FWLIB\STM32F10x_FWLib\inc;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\SRAM;..\HARDWARE\TIMER;..\HARDWARE\SD;..\HARDWARE\FLASH;..\MALLOC;..\MALLOC;..\USMART;..\TEXT;..\FATFS\src;..\FATFS\exfuns;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView;..\EMWIN\STemWin\inc;..\EMWIN\STemWin\Config;..\EMWIN_DEMO\BITMAP_DISPLAY;..\EMWIN_DEMO\BMP;..\EMWIN\STemWinHZ;..\USMART</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\FWLIB\STM32F10x_FWLib\inc;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\SRAM;..\HARDWARE\TIMER;..\HARDWARE\SD;..\HARDWARE\FLASH;..\MALLOC;..\MALLOC;..\USMART;..\TEXT;..\FATFS\src;..\FATFS\exfuns;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView;..\EMWIN\STemWin\inc;..\EMWIN\STemWin\Config;..\EMWIN_DEMO\BITMAP_DISPLAY;..\EMWIN_DEMO\BMP;..\EMWIN\STemWinHZ;..\USMART;..\IMAGE2LCD</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -938,6 +938,16 @@
               <FileName>usmart_str.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USMART\usmart_str.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>IMAGE2LCD</GroupName>
+          <Files>
+            <File>
+              <FileName>image2lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\IMAGE2LCD\image2lcd.c</FilePath>
             </File>
           </Files>
         </Group>
