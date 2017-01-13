@@ -86,6 +86,7 @@
 "..\obj\usmart_config.o"
 "..\obj\usmart_str.o"
 "..\obj\image2lcd.o"
+"..\obj\mypage.o"
 --strict --scatter "..\OBJ\MALLOC.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

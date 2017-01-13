@@ -109,3 +109,4 @@
 ..\obj\main.o: ..\USMART\usmart.h
 ..\obj\main.o: ..\USMART\usmart_str.h
 ..\obj\main.o: ..\IMAGE2LCD\image2lcd.h
+..\obj\main.o: ..\MYPAGE\mypage.h
