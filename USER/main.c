@@ -24,79 +24,81 @@
 #include "mypage.h"
 
 /************************************************
- ALIENTEK MiniSTM32å¼€å‘æ¿STemWinå®éªŒ
- STemWin ç»˜åˆ¶ä½å›¾
+ ALIENTEK MiniSTM32¿ª·¢°åSTemWinÊµÑé
+ STemWin »æÖÆÎ»Í¼
 
- UCOSIIIä¸­ä»¥ä¸‹ä¼˜å…ˆçº§ç”¨æˆ·ç¨‹åºä¸èƒ½ä½¿ç”¨ï¼ŒALIENTEK
- å°†è¿™äº›ä¼˜å…ˆçº§åˆ†é…ç»™äº†UCOSIIIçš„5ä¸ªç³»ç»Ÿå†…éƒ¨ä»»åŠ¡
- ä¼˜å…ˆçº§0ï¼šä¸­æ–­æœåŠ¡æœåŠ¡ç®¡ç†ä»»åŠ¡ OS_IntQTask()
- ä¼˜å…ˆçº§1ï¼šæ—¶é’ŸèŠ‚æ‹ä»»åŠ¡ OS_TickTask()
- ä¼˜å…ˆçº§2ï¼šå®šæ—¶ä»»åŠ¡ OS_TmrTask()
- ä¼˜å…ˆçº§OS_CFG_PRIO_MAX-2ï¼šç»Ÿè®¡ä»»åŠ¡ OS_StatTask()
- ä¼˜å…ˆçº§OS_CFG_PRIO_MAX-1ï¼šç©ºé—²ä»»åŠ¡ OS_IdleTask()
- æŠ€æœ¯æ”¯æŒï¼šwww.openedv.com
- æ·˜å®åº—é“ºï¼šhttp://eboard.taobao.com
- å…³æ³¨å¾®ä¿¡å…¬ä¼—å¹³å°å¾®ä¿¡å·ï¼š"æ­£ç‚¹åŸå­"ï¼Œå…è´¹è·å–STM32èµ„æ–™ã€‚
- å¹¿å·å¸‚æ˜Ÿç¿¼ç”µå­ç§‘æŠ€æœ‰é™å…¬å¸
- ä½œè€…ï¼šæ­£ç‚¹åŸå­ @ALIENTEK
- å¼€å‘è®°å½•ï¼š
- 2016-11-28 æµ‹è¯•äº†ä»å†…å­˜å’Œflashè¯»å›¾ç‰‡ï¼Œå‘ç°æ‰€éœ€æ—¶é—´è¾ƒå¤š
- 2016-11-29 æµ‹è¯•äº†è§¦æ‘¸å¯¹åº”ä½ç½®å®ç°ä¸åŒçš„æŒ‡ä»¤ï¼Œæµ‹è¯•æˆåŠŸ
- 2016-11-30 è¯•ç€ç”¨emwinå‚¨å­˜çš„åŠæ³•æ¥å‡å°‘bmpæ˜¾ç¤ºçš„å»¶æ—¶ï¼Œå‘ç°æ²¡åµç”¨
- 2016-12-1 æµ‹è¯•äº†ç”¨ç›´æ¥è¯»rgbæ•°æ®çš„åŠæ³•æ˜¾ç¤ºå›¾ç‰‡ï¼Œå¸Œæœ›å‡å°‘å»¶æ—¶ï¼Œå‘ç°è¿˜æ˜¯æ²¡åµç”¨ï¼ŒåŠ è½½é€Ÿåº¦æ¯”è§£ç bmpå›¾ç‰‡çš„æ–¹æ³•å‡å°‘äº†ä¸€åŠã€‚
- 2016-12-2 æµ‹è¯•äº†ç›´æ¥ç”»å‡ºæ¥ç•Œé¢ï¼Œå‘ç°æ˜¯å¯è¡Œçš„ï¼Œå°±æ˜¯å­—ä½“çš„é—®é¢˜æ²¡æœ‰è§£å†³ï¼Œä¸­æ–‡å­—ç¬¦è¿˜ä¸èƒ½æ˜¾ç¤º
- 2017-1-12 å®ç°äº†ä¸­æ–‡å­—ä½“ï¼Œåªæ˜¯å®‹ä½“ï¼Œä¸‰ç§å¤§å°æ ¼å¼ï¼ŒåæœŸçœ‹æƒ…å†µå†å®ç°å…¶ä»–çš„
- 2017-1-13 å†™äº†ä¸‰ä¸ªç•Œé¢ï¼Œå¹¶å®ç°äº†è·³è½¬ï¼Œè·³è½¬ä¹‹é—´æœ‰bug
- æµ‹è¯•äººï¼šå°èƒèŸ¹
+ UCOSIIIÖĞÒÔÏÂÓÅÏÈ¼¶ÓÃ»§³ÌĞò²»ÄÜÊ¹ÓÃ£¬ALIENTEK
+ ½«ÕâĞ©ÓÅÏÈ¼¶·ÖÅä¸øÁËUCOSIIIµÄ5¸öÏµÍ³ÄÚ²¿ÈÎÎñ
+ ÓÅÏÈ¼¶0£ºÖĞ¶Ï·şÎñ·şÎñ¹ÜÀíÈÎÎñ OS_IntQTask()
+ ÓÅÏÈ¼¶1£ºÊ±ÖÓ½ÚÅÄÈÎÎñ OS_TickTask()
+ ÓÅÏÈ¼¶2£º¶¨Ê±ÈÎÎñ OS_TmrTask()
+ ÓÅÏÈ¼¶OS_CFG_PRIO_MAX-2£ºÍ³¼ÆÈÎÎñ OS_StatTask()
+ ÓÅÏÈ¼¶OS_CFG_PRIO_MAX-1£º¿ÕÏĞÈÎÎñ OS_IdleTask()
+ ¼¼ÊõÖ§³Ö£ºwww.openedv.com
+ ÌÔ±¦µêÆÌ£ºhttp://eboard.taobao.com
+ ¹Ø×¢Î¢ĞÅ¹«ÖÚÆ½Ì¨Î¢ĞÅºÅ£º"ÕıµãÔ­×Ó"£¬Ãâ·Ñ»ñÈ¡STM32×ÊÁÏ¡£
+ ¹ãÖİÊĞĞÇÒíµç×Ó¿Æ¼¼ÓĞÏŞ¹«Ë¾
+ ×÷Õß£ºÕıµãÔ­×Ó @ALIENTEK
+ ¿ª·¢¼ÇÂ¼£º
+ 2016-11-28 ²âÊÔÁË´ÓÄÚ´æºÍflash¶ÁÍ¼Æ¬£¬·¢ÏÖËùĞèÊ±¼ä½Ï¶à
+ 2016-11-29 ²âÊÔÁË´¥Ãş¶ÔÓ¦Î»ÖÃÊµÏÖ²»Í¬µÄÖ¸Áî£¬²âÊÔ³É¹¦
+ 2016-11-30 ÊÔ×ÅÓÃemwin´¢´æµÄ°ì·¨À´¼õÉÙbmpÏÔÊ¾µÄÑÓÊ±£¬·¢ÏÖÃ»ÂÑÓÃ
+ 2016-12-1 ²âÊÔÁËÓÃÖ±½Ó¶ÁrgbÊı¾İµÄ°ì·¨ÏÔÊ¾Í¼Æ¬£¬Ï£Íû¼õÉÙÑÓÊ±£¬·¢ÏÖ»¹ÊÇÃ»ÂÑÓÃ£¬¼ÓÔØËÙ¶È±È½âÂëbmpÍ¼Æ¬µÄ·½·¨¼õÉÙÁËÒ»°ë¡£
+ 2016-12-2 ²âÊÔÁËÖ±½Ó»­³öÀ´½çÃæ£¬·¢ÏÖÊÇ¿ÉĞĞµÄ£¬¾ÍÊÇ×ÖÌåµÄÎÊÌâÃ»ÓĞ½â¾ö£¬ÖĞÎÄ×Ö·û»¹²»ÄÜÏÔÊ¾
+ 2017-1-12 ÊµÏÖÁËÖĞÎÄ×ÖÌå£¬Ö»ÊÇËÎÌå£¬ÈıÖÖ´óĞ¡¸ñÊ½£¬ºóÆÚ¿´Çé¿öÔÙÊµÏÖÆäËûµÄ
+ 2017-1-13 Ğ´ÁËÈı¸ö½çÃæ£¬²¢ÊµÏÖÁËÌø×ª£¬Ìø×ªÖ®¼äÓĞbug
+ 2017-1-14 ½â¾öÁË½çÃæÌø×ªÖ®¼äµÄbug£¬µ«²»ÊÇºÜÍêÃÀ£¬´òËãÓÃemwin×Ô´øµÄ´°¿Ú¹ÜÀíÆ÷½øĞĞÇĞ»»
+ 2017-1-24 ½«½çÃæÈ«²¿¸Ä³ÉÁË´°¿ÚµÄĞÎÊ½£¬½â¾öÁË½çÃæÌø×ªµÄÂß¼­¶ÑÕ»ÎÊÌâ£¬ÏÂÒ»²½´òËãÀûÓÃlistwheel½øĞĞ²å¼şÕûºÏ
+ ²âÊÔÈË£ºĞ¡ó¦Ğ·
 ************************************************/
-//ä»»åŠ¡ä¼˜å…ˆçº§
+//ÈÎÎñÓÅÏÈ¼¶
 #define START_TASK_PRIO				3
-//ä»»åŠ¡å †æ ˆå¤§å°
+//ÈÎÎñ¶ÑÕ»´óĞ¡
 #define START_STK_SIZE 				128
-//ä»»åŠ¡æ§åˆ¶å—
+//ÈÎÎñ¿ØÖÆ¿é
 OS_TCB StartTaskTCB;
-//ä»»åŠ¡å †æ ˆ
+//ÈÎÎñ¶ÑÕ»
 CPU_STK START_TASK_STK[START_STK_SIZE];
-//ä»»åŠ¡å‡½æ•°
+//ÈÎÎñº¯Êı
 void start_task(void *p_arg);
 
-//TOUCHä»»åŠ¡
-//è®¾ç½®ä»»åŠ¡ä¼˜å…ˆçº§
+//TOUCHÈÎÎñ
+//ÉèÖÃÈÎÎñÓÅÏÈ¼¶
 #define TOUCH_TASK_PRIO				4
-//ä»»åŠ¡å †æ ˆå¤§å°
+//ÈÎÎñ¶ÑÕ»´óĞ¡
 #define TOUCH_STK_SIZE				128
-//ä»»åŠ¡æ§åˆ¶å—
+//ÈÎÎñ¿ØÖÆ¿é
 OS_TCB TouchTaskTCB;
-//ä»»åŠ¡å †æ ˆ
+//ÈÎÎñ¶ÑÕ»
 CPU_STK TOUCH_TASK_STK[TOUCH_STK_SIZE];
-//touchä»»åŠ¡
+//touchÈÎÎñ
 void touch_task(void *p_arg);
 
-//EMWINDEMOä»»åŠ¡
-//è®¾ç½®ä»»åŠ¡ä¼˜å…ˆçº§
+//EMWINDEMOÈÎÎñ
+//ÉèÖÃÈÎÎñÓÅÏÈ¼¶
 #define EMWINDEMO_TASK_PRIO			5
-//ä»»åŠ¡å †æ ˆå¤§å°
+//ÈÎÎñ¶ÑÕ»´óĞ¡
 #define EMWINDEMO_STK_SIZE			1024
-//ä»»åŠ¡æ§åˆ¶å—
+//ÈÎÎñ¿ØÖÆ¿é
 OS_TCB EmwindemoTaskTCB;
-//ä»»åŠ¡å †æ ˆ
+//ÈÎÎñ¶ÑÕ»
 CPU_STK EMWINDEMO_TASK_STK[EMWINDEMO_STK_SIZE];
-//emwindemo_taskä»»åŠ¡
+//emwindemo_taskÈÎÎñ
 void emwindemo_task(void *p_arg);
 
-//LED0ä»»åŠ¡
-//è®¾ç½®ä»»åŠ¡ä¼˜å…ˆçº§
+//LED0ÈÎÎñ
+//ÉèÖÃÈÎÎñÓÅÏÈ¼¶
 #define LED0_TASK_PRIO 				OS_CFG_PRIO_MAX-10
-//ä»»åŠ¡å †æ ˆå¤§å°
+//ÈÎÎñ¶ÑÕ»´óĞ¡
 #define LED0_STK_SIZE				128
-//ä»»åŠ¡æ§åˆ¶å—
+//ÈÎÎñ¿ØÖÆ¿é
 OS_TCB Led0TaskTCB;
-//ä»»åŠ¡å †æ ˆ
+//ÈÎÎñ¶ÑÕ»
 CPU_STK LED0_TASK_STK[LED0_STK_SIZE];
-//led0ä»»åŠ¡
+//led0ÈÎÎñ
 void led0_task(void *p_arg);
 
-//void myScreen(void);
+void myScreen(void);
 void startPage(void);
 
 int main(void)
@@ -104,43 +106,43 @@ int main(void)
 	OS_ERR err;
 	CPU_SR_ALLOC();
 
-	delay_init();	    	//å»¶æ—¶å‡½æ•°åˆå§‹åŒ–
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); 	//è®¾ç½®NVICä¸­æ–­åˆ†ç»„2:2ä½æŠ¢å ä¼˜å…ˆçº§ï¼Œ2ä½å“åº”ä¼˜å…ˆçº§
-	uart_init(115200);	 	//ä¸²å£åˆå§‹åŒ–ä¸º115200
- 	LED_Init();			    //LEDç«¯å£åˆå§‹åŒ–
-	TFTLCD_Init();			//LCDåˆå§‹åŒ–
-	KEY_Init();	 			//æŒ‰é”®åˆå§‹åŒ–
-	mem_init();				//åˆå§‹åŒ–å†…éƒ¨å†…å­˜æ± 
+	delay_init();	    	//ÑÓÊ±º¯Êı³õÊ¼»¯
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); 	//ÉèÖÃNVICÖĞ¶Ï·Ö×é2:2Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2Î»ÏìÓ¦ÓÅÏÈ¼¶
+	uart_init(115200);	 	//´®¿Ú³õÊ¼»¯Îª115200
+ 	LED_Init();			    //LED¶Ë¿Ú³õÊ¼»¯
+	TFTLCD_Init();			//LCD³õÊ¼»¯
+	KEY_Init();	 			//°´¼ü³õÊ¼»¯
+	mem_init();				//³õÊ¼»¯ÄÚ²¿ÄÚ´æ³Ø
 
-	exfuns_init();			//ä¸ºfatfsæ–‡ä»¶ç³»ç»Ÿåˆ†é…å†…å­˜
-	f_mount(fs[0],"0:",1);	//æŒ‚è½½SDå¡
-	f_mount(fs[1],"1:",1);	//æŒ‚è½½FLASH
-	font_init();      //å­—ä½“åˆå§‹åŒ–
-	TP_Init();				//è§¦æ‘¸å±åˆå§‹åŒ–
+	exfuns_init();			//ÎªfatfsÎÄ¼şÏµÍ³·ÖÅäÄÚ´æ
+	f_mount(fs[0],"0:",1);	//¹ÒÔØSD¿¨
+	f_mount(fs[1],"1:",1);	//¹ÒÔØFLASH
+	font_init();      //×ÖÌå³õÊ¼»¯
+	TP_Init();				//´¥ÃşÆÁ³õÊ¼»¯
 	usmart_dev.init(72);
 
-	OSInit(&err);			//åˆå§‹åŒ–UCOSIII
-	OS_CRITICAL_ENTER();	//è¿›å…¥ä¸´ç•ŒåŒº
-	//åˆ›å»ºå¼€å§‹ä»»åŠ¡
-	OSTaskCreate((OS_TCB 	* )&StartTaskTCB,		//ä»»åŠ¡æ§åˆ¶å—
-				 (CPU_CHAR	* )"start task", 		//ä»»åŠ¡åå­—
-                 (OS_TASK_PTR )start_task, 			//ä»»åŠ¡å‡½æ•°
-                 (void		* )0,					//ä¼ é€’ç»™ä»»åŠ¡å‡½æ•°çš„å‚æ•°
-                 (OS_PRIO	  )START_TASK_PRIO,     //ä»»åŠ¡ä¼˜å…ˆçº§
-                 (CPU_STK   * )&START_TASK_STK[0],	//ä»»åŠ¡å †æ ˆåŸºåœ°å€
-                 (CPU_STK_SIZE)START_STK_SIZE/10,	//ä»»åŠ¡å †æ ˆæ·±åº¦é™ä½
-                 (CPU_STK_SIZE)START_STK_SIZE,		//ä»»åŠ¡å †æ ˆå¤§å°
-                 (OS_MSG_QTY  )0,					//ä»»åŠ¡å†…éƒ¨æ¶ˆæ¯é˜Ÿåˆ—èƒ½å¤Ÿæ¥æ”¶çš„æœ€å¤§æ¶ˆæ¯æ•°ç›®,ä¸º0æ—¶ç¦æ­¢æ¥æ”¶æ¶ˆæ¯
-                 (OS_TICK	  )0,					//å½“ä½¿èƒ½æ—¶é—´ç‰‡è½®è½¬æ—¶çš„æ—¶é—´ç‰‡é•¿åº¦ï¼Œä¸º0æ—¶ä¸ºé»˜è®¤é•¿åº¦ï¼Œ
-                 (void   	* )0,					//ç”¨æˆ·è¡¥å……çš„å­˜å‚¨åŒº
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, //ä»»åŠ¡é€‰é¡¹
-                 (OS_ERR 	* )&err);				//å­˜æ”¾è¯¥å‡½æ•°é”™è¯¯æ—¶çš„è¿”å›å€¼
-	OS_CRITICAL_EXIT();	//é€€å‡ºä¸´ç•ŒåŒº
-	OSStart(&err);  //å¼€å¯UCOSIII
+	OSInit(&err);			//³õÊ¼»¯UCOSIII
+	OS_CRITICAL_ENTER();	//½øÈëÁÙ½çÇø
+	//´´½¨¿ªÊ¼ÈÎÎñ
+	OSTaskCreate((OS_TCB 	* )&StartTaskTCB,		//ÈÎÎñ¿ØÖÆ¿é
+				 (CPU_CHAR	* )"start task", 		//ÈÎÎñÃû×Ö
+                 (OS_TASK_PTR )start_task, 			//ÈÎÎñº¯Êı
+                 (void		* )0,					//´«µİ¸øÈÎÎñº¯ÊıµÄ²ÎÊı
+                 (OS_PRIO	  )START_TASK_PRIO,     //ÈÎÎñÓÅÏÈ¼¶
+                 (CPU_STK   * )&START_TASK_STK[0],	//ÈÎÎñ¶ÑÕ»»ùµØÖ·
+                 (CPU_STK_SIZE)START_STK_SIZE/10,	//ÈÎÎñ¶ÑÕ»Éî¶ÈÏŞÎ»
+                 (CPU_STK_SIZE)START_STK_SIZE,		//ÈÎÎñ¶ÑÕ»´óĞ¡
+                 (OS_MSG_QTY  )0,					//ÈÎÎñÄÚ²¿ÏûÏ¢¶ÓÁĞÄÜ¹»½ÓÊÕµÄ×î´óÏûÏ¢ÊıÄ¿,Îª0Ê±½ûÖ¹½ÓÊÕÏûÏ¢
+                 (OS_TICK	  )0,					//µ±Ê¹ÄÜÊ±¼äÆ¬ÂÖ×ªÊ±µÄÊ±¼äÆ¬³¤¶È£¬Îª0Ê±ÎªÄ¬ÈÏ³¤¶È£¬
+                 (void   	* )0,					//ÓÃ»§²¹³äµÄ´æ´¢Çø
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, //ÈÎÎñÑ¡Ïî
+                 (OS_ERR 	* )&err);				//´æ·Å¸Ãº¯Êı´íÎóÊ±µÄ·µ»ØÖµ
+	OS_CRITICAL_EXIT();	//ÍË³öÁÙ½çÇø
+	OSStart(&err);  //¿ªÆôUCOSIII
 	while(1);
 }
 
-//å¼€å§‹ä»»åŠ¡å‡½æ•°
+//¿ªÊ¼ÈÎÎñº¯Êı
 void start_task(void *p_arg)
 {
 	OS_ERR err;
@@ -149,22 +151,22 @@ void start_task(void *p_arg)
 
 	CPU_Init();
 #if OS_CFG_STAT_TASK_EN > 0u
-   OSStatTaskCPUUsageInit(&err);  	//ç»Ÿè®¡ä»»åŠ¡
+   OSStatTaskCPUUsageInit(&err);  	//Í³¼ÆÈÎÎñ
 #endif
 
-#ifdef CPU_CFG_INT_DIS_MEAS_EN		//å¦‚æœä½¿èƒ½äº†æµ‹é‡ä¸­æ–­å…³é—­æ—¶é—´
+#ifdef CPU_CFG_INT_DIS_MEAS_EN		//Èç¹ûÊ¹ÄÜÁË²âÁ¿ÖĞ¶Ï¹Ø±ÕÊ±¼ä
     CPU_IntDisMeasMaxCurReset();
 #endif
 
-#if	OS_CFG_SCHED_ROUND_ROBIN_EN  //å½“ä½¿ç”¨æ—¶é—´ç‰‡è½®è½¬çš„æ—¶å€™
-	 //ä½¿èƒ½æ—¶é—´ç‰‡è½®è½¬è°ƒåº¦åŠŸèƒ½,æ—¶é—´ç‰‡é•¿åº¦ä¸º1ä¸ªç³»ç»Ÿæ—¶é’ŸèŠ‚æ‹ï¼Œæ—¢1*5=5ms
+#if	OS_CFG_SCHED_ROUND_ROBIN_EN  //µ±Ê¹ÓÃÊ±¼äÆ¬ÂÖ×ªµÄÊ±ºò
+	 //Ê¹ÄÜÊ±¼äÆ¬ÂÖ×ªµ÷¶È¹¦ÄÜ,Ê±¼äÆ¬³¤¶ÈÎª1¸öÏµÍ³Ê±ÖÓ½ÚÅÄ£¬¼È1*5=5ms
 	OSSchedRoundRobinCfg(DEF_ENABLED,1,&err);
 #endif
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_CRC,ENABLE);//å¼€å¯CRCæ—¶é’Ÿ
-	GUI_Init();  			//STemWinåˆå§‹åŒ–
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_CRC,ENABLE);//¿ªÆôCRCÊ±ÖÓ
+	GUI_Init();  			//STemWin³õÊ¼»¯
 
-	OS_CRITICAL_ENTER();	//è¿›å…¥ä¸´ç•ŒåŒº
-	//STemWin Demoä»»åŠ¡
+	OS_CRITICAL_ENTER();	//½øÈëÁÙ½çÇø
+	//STemWin DemoÈÎÎñ
 	OSTaskCreate((OS_TCB*     )&EmwindemoTaskTCB,
 				 (CPU_CHAR*   )"Emwindemo task",
                  (OS_TASK_PTR )emwindemo_task,
@@ -178,7 +180,7 @@ void start_task(void *p_arg)
                  (void*       )0,
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR,
                  (OS_ERR*     )&err);
-	//è§¦æ‘¸å±ä»»åŠ¡
+	//´¥ÃşÆÁÈÎÎñ
 	OSTaskCreate((OS_TCB*     )&TouchTaskTCB,
 				 (CPU_CHAR*   )"Touch task",
                  (OS_TASK_PTR )touch_task,
@@ -192,7 +194,7 @@ void start_task(void *p_arg)
                  (void*       )0,
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR,
                  (OS_ERR*     )&err);
-	//LED0ä»»åŠ¡
+	//LED0ÈÎÎñ
 	OSTaskCreate((OS_TCB*     )&Led0TaskTCB,
 				 (CPU_CHAR*   )"Led0 task",
                  (OS_TASK_PTR )led0_task,
@@ -207,21 +209,21 @@ void start_task(void *p_arg)
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR,
                  (OS_ERR*     )&err);
 
-	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//æŒ‚èµ·å¼€å§‹ä»»åŠ¡
-	OS_CRITICAL_EXIT();	//é€€å‡ºä¸´ç•ŒåŒº
+	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//¹ÒÆğ¿ªÊ¼ÈÎÎñ
+	OS_CRITICAL_EXIT();	//ÍË³öÁÙ½çÇø
 }
 
 
-//EMWINDEMOä»»åŠ¡
+//EMWINDEMOÈÎÎñ
 void emwindemo_task(void *pdata){
 	//OS_ERR err;
 //	GUI_MEMDEV_Handle hMem;
-	GUI_PID_STATE touchState;//è§¦æ‘¸çŠ¶æ€
+	GUI_PID_STATE touchState;//´¥Ãş×´Ì¬
 	FIL fp;
 	char *buff;
 	unsigned int num;
 	buff=(char*)mymalloc(3840);
-	f_open(&fp,(const TCHAR*)"0:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//æ‰“å¼€æ–‡ä»¶ï¼Œå°†æ–‡ä»¶å¥æŸ„æ”¾åœ¨fpä¸­
+	f_open(&fp,(const TCHAR*)"0:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//´ò¿ªÎÄ¼ş£¬½«ÎÄ¼ş¾ä±ú·ÅÔÚfpÖĞ
 
 //	GUI_SetBkColor(GUI_BLUE);
 //	GUI_SetColor(GUI_RED);
@@ -229,18 +231,18 @@ void emwindemo_task(void *pdata){
 //	GUI_SetFont(&GUI_FontHZ16);
 //	GUI_Clear();
 
-	pageHome();
-//	LCD_Scan_Dir(L2R_U2D);//ä»å·¦åˆ°å³,ä»ä¸Šåˆ°ä¸‹
+	W_pageHome();
+//	LCD_Scan_Dir(L2R_U2D);//´Ó×óµ½ÓÒ,´ÓÉÏµ½ÏÂ
 //	LCD_Set_Window(0,0,240,320);
-//	LCD_SetCursor(0,0);//è®¾ç½®å…‰æ ‡ä½ç½®
-//	LCD_WriteRAM_Prepare();   	//å¼€å§‹å†™å…¥GRAM
+//	LCD_SetCursor(0,0);//ÉèÖÃ¹â±êÎ»ÖÃ
+//	LCD_WriteRAM_Prepare();   	//¿ªÊ¼Ğ´ÈëGRAM
 //
 //	for(int y=0;y<40;y++){
-//		f_read(&fp,buff,3840,(UINT*)&num);//ä»æ–‡ä»¶å°†æ•°æ®å­˜å…¥æ•°ç»„é‡Œ,è‡ªå·±ä¼šä¸æ–­çš„å¢åŠ 
+//		f_read(&fp,buff,3840,(UINT*)&num);//´ÓÎÄ¼ş½«Êı¾İ´æÈëÊı×éÀï,×Ô¼º»á²»¶ÏµÄÔö¼Ó
 //		for(int i=0;i<3840;i+=2){
 //			LCD_WR_DATA(image_getcolor(0,(u8*)buff+i));
 //		}
-//		//f_lseek(&fp,fp.fptr+480);//f_readä¸­å¯¹numçš„æ“ä½œå·²ç»å¯ä»¥è®©ç³»ç»Ÿè¿ç»­è¯»äº†ï¼Œå¹¶ä¸éœ€è¦æ‰‹å·¥æ“ä½œ
+//		//f_lseek(&fp,fp.fptr+480);//f_readÖĞ¶ÔnumµÄ²Ù×÷ÒÑ¾­¿ÉÒÔÈÃÏµÍ³Á¬Ğø¶ÁÁË£¬²¢²»ĞèÒªÊÖ¹¤²Ù×÷
 // }
 //	myfree(buff);
 //	f_close(&fp);
@@ -252,87 +254,70 @@ void emwindemo_task(void *pdata){
 	//GUI_MEMDEV_Select(0);
 	//GUI_MEMDEV_CopyToLCDAt(hMem,0,0);
 	GUI_Delay(1000);
-	while(1){
-		GUI_PID_GetState(&touchState);//å¾—åˆ°è§¦æ‘¸å±çš„åæ ‡
-//		GUI_DispDecAt(touchState.x,0,10,3);//æ˜¾ç¤ºxå€¼
-//		GUI_DispDecAt(touchState.y,0,10+16,3);//æ˜¾ç¤ºyå€¼
-		if (touchState.y < 17.9&&touchState.x>191) {
-			GUI_DispStringAt("0", 0, 0);
-		}else if (touchState.y > 109 && touchState.y < 160) {
-			GUI_DispStringAt("1", 0, 0);
-		}else if(touchState.y>=160&&touchState.y<212){
-			GUI_DispStringAt("2", 0, 0);
-		}else if (touchState.y >= 212 && touchState.y <= 262) {
-			GUI_DispStringAt("3", 0, 0);
-		}else if (touchState.y >= 262) {
-			GUI_DispStringAt("4", 0, 0);
-		}
-		GUI_Delay(100);
 		//GUI_Clear();
-	}
 }
 
-//TOUCHä»»åŠ¡
+//TOUCHÈÎÎñ
 void touch_task(void *p_arg)
 {
 	OS_ERR err;
 	while(1)
 	{
 		GUI_TOUCH_Exec();
-		OSTimeDlyHMSM(0,0,0,5,OS_OPT_TIME_PERIODIC,&err);//å»¶æ—¶5ms
+		OSTimeDlyHMSM(0,0,0,5,OS_OPT_TIME_PERIODIC,&err);//ÑÓÊ±5ms
 	}
 }
 
-//LED0ä»»åŠ¡
+//LED0ÈÎÎñ
 void led0_task(void *p_arg)
 {
 	OS_ERR err;
 	while(1)
 	{
 		LED0 = !LED0;
-		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_PERIODIC,&err);//å»¶æ—¶500ms
+		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_PERIODIC,&err);//ÑÓÊ±500ms
 	}
 }
 //void touchMeasure_task(void *p_arg){
 //	OS_ERR err;
-//	GUI_PID_STATE touchState;//è§¦æ‘¸çŠ¶æ€
+//	GUI_PID_STATE touchState;//´¥Ãş×´Ì¬
 //	while(1){
 //		LED1=!LED1;
 //		GUI_PID_GetState(&touchState);
-//		GUI_DispDecAt(touchState.x,10,50,6);//æ˜¾ç¤ºxå€¼
-//		GUI_DispDecAt(touchState.y,10,50+16,6);//æ˜¾ç¤ºyå€¼
+//		GUI_DispDecAt(touchState.x,10,50,6);//ÏÔÊ¾xÖµ
+//		GUI_DispDecAt(touchState.y,10,50+16,6);//ÏÔÊ¾yÖµ
 //		GUI_DispDecAt(touchState.Pressed,10,50+16+16,6);
 ////		GUI_DispDecAt(GUI_TOUCH_X_MeasureX(),10,50,6);
 ////		GUI_DispDecAt(GUI_TOUCH_X_MeasureY(),20,100,6);
-//		OSTimeDlyHMSM(0,0,0,50,OS_OPT_TIME_PERIODIC,&err);//å»¶æ—¶50ms
+//		OSTimeDlyHMSM(0,0,0,50,OS_OPT_TIME_PERIODIC,&err);//ÑÓÊ±50ms
 //	}
 //}
 
-//void myScreen(void){
-//	//GUI_Init();
-//	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
-//	GUI_Clear();
-//	//èƒŒæ™¯
-//	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
-//	GUI_ClearRect(0, 109, 240, 320);
-//	//æ¨ªçº¿
-//	GUI_SetPenSize(1);
-//	GUI_SetColor(MYCOLOR_LINE);
-//	GUI_DrawHLine(109, 0, 240);
-//	GUI_DrawHLine(160, 0, 240);
-//	GUI_DrawHLine(212, 0, 240);
-//	GUI_DrawLine(0, 262, 240, 262);
-//	//å­—ä½“
-//	GUI_SetColor(MYCOLOR_TITLE_TEXT);
-//	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
-//	GUI_SetFont(&GUI_FontHZ24);
-//	GUI_DispStringHCenterAt("ç³»ç»Ÿè®¾ç½®", 120, 51.6);
-
-//	GUI_SetColor(MYCOLOR_CONTENT_TEXT);
-//	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
-//	GUI_SetFont(&GUI_FontHZ16);
-//	GUI_DispStringHCenterAt("ä¸ªæ€§è®¾ç½®", 120, 137.5-10);
-//	GUI_DispStringHCenterAt("ç³»ç»Ÿå‡çº§", 120, 188.2-10);
-//	GUI_DispStringHCenterAt("ç³»ç»Ÿä¿¡æ¯", 120, 239.8-10);
-//	GUI_DispStringHCenterAt("å…³äºæˆ‘ä»¬", 120, 293.4-10);
-//}
+// void myScreen(void){
+// 	//GUI_Init();
+// 	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
+// 	GUI_Clear();
+// 	//±³¾°
+// 	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
+// 	GUI_ClearRect(0, 109, 240, 320);
+// 	//ºáÏß
+// 	GUI_SetPenSize(1);
+// 	GUI_SetColor(MYCOLOR_LINE);
+// 	GUI_DrawHLine(109, 0, 240);
+// 	GUI_DrawHLine(160, 0, 240);
+// 	GUI_DrawHLine(212, 0, 240);
+// 	GUI_DrawLine(0, 262, 240, 262);
+// 	//×ÖÌå
+// 	GUI_SetColor(MYCOLOR_TITLE_TEXT);
+// 	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
+// 	GUI_SetFont(&GUI_FontHZ24);
+// 	GUI_DispStringHCenterAt("ÏµÍ³ÉèÖÃ", 120, 51.6);
+//
+// 	GUI_SetColor(MYCOLOR_CONTENT_TEXT);
+// 	GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
+// 	GUI_SetFont(&GUI_FontHZ16);
+// 	GUI_DispStringHCenterAt("¸öĞÔÉèÖÃ", 120, 137.5-10);
+// 	GUI_DispStringHCenterAt("ÏµÍ³Éı¼¶", 120, 188.2-10);
+// 	GUI_DispStringHCenterAt("ÏµÍ³ĞÅÏ¢", 120, 239.8-10);
+// 	GUI_DispStringHCenterAt("¹ØÓÚÎÒÃÇ", 120, 293.4-10);
+// }
