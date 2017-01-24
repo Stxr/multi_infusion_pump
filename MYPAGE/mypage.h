@@ -35,6 +35,11 @@
 #define MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT1 0x333333
 #define MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2 0x98593b
 
-void pageSetting(void);
-void pageHome(void);
-void pageShuyeSetting(void);
+void pageSetting(WM_MESSAGE *pMsg);
+void pageHome(WM_MESSAGE *pMsg);
+void pageShuyeSetting(WM_MESSAGE *pMsg);
+void pageDisplay(WM_MESSAGE *pMsg);
+void W_pageHome(void);
+void W_pageShuyeSetting(void);
+void W_pageSetting(void);
+void W_pageDisplay(void);
