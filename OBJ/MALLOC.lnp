@@ -87,7 +87,7 @@
 "..\obj\usmart_str.o"
 "..\obj\image2lcd.o"
 "..\obj\mypage.o"
---strict --scatter "..\OBJ\MALLOC.sct"
+--library_type=microlib --strict --scatter "..\OBJ\MALLOC.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\MALLOC.map" -o ..\OBJ\MALLOC.axf
