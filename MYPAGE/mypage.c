@@ -1,4 +1,9 @@
 #include "mypage.h"
+double shuyeData[4][5];
+char s[5];
+int index=0;
+double data[5];
+MULTIPAGE_Handle aMultipage;
 static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
 	//
 	//  Function                 Text      Id					 Px   Py   Dx   Dy
@@ -31,42 +36,45 @@ static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
 */
 void MainTask(void) {
 	GUI_Init();
-	WM_EnableMemdev(WM_HBKWIN); //启用储存设备
-	W_pageShuyeSetting();
+	WM_EnableMemdev(WM_HBKWIN); //??????
+	W_pageShuyeDisplay();
+	while (1) {
+		GUI_Delay(500);
+	}
 }
 void W_pageDisplay(void) {
 	WM_HWIN hWnd;
-	GUI_PID_STATE touchState;
+	index = 0;
 	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
 	GUI_Exec();
-	while (1)
-	{
-		GUI_Delay(20);
-	}
+	//while (1)
+	//{
+	//	GUI_Delay(20);
+	//}
 }
 void W_pageHome(void) {
 	WM_HWIN hWnd;
-	LISTWHEEL_Handle a;
-	char * apText[] = {
-		"Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday",
-		"Sunday",
-		NULL
+	//LISTWHEEL_Handle a;
+	//char * apText[] = {
+	//	"Monday",
+	//	"Tuesday",
+	//	"Wednesday",
+	//	"Thursday",
+	//	"Friday",
+	//	"Saturday",
+	//	"Sunday",
+	//	NULL
 
-	};
+	//};
 	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageHome, 0);
-	a = LISTWHEEL_CreateEx(10, 10, 50, 50, hWnd, WM_CF_SHOW, 0, 0, apText);
+	//a = LISTWHEEL_CreateEx(10, 10, 50, 50, hWnd, WM_CF_SHOW, 0, 0, apText);
 
 	GUI_Exec();
-	while (1)
-	{
-		GUI_Delay(50);
+	//while (1)
+	//{
+	//	GUI_Delay(50);
 
-	}
+	//}
 }
 void W_pageSetting(void) {
 	WM_HWIN hWnd;
@@ -75,80 +83,135 @@ void W_pageSetting(void) {
 	GUI_Exec();
 	GUI_SetColor(MYCOLOR_TITLE_TEXT);
 	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
-	while (1)
-	{
-		GUI_Delay(20);
-		//GUI_PID_GetState(&touchState);
-		//if (touchState.Pressed == 1) {
-		//	while (touchState.Pressed == 1) {
-		//		GUI_PID_GetState(&touchState);
-		//	}
-		//	if (touchState.y < 17.9&&touchState.x>191) {
-		//		GUI_DispStringAt("0", 0, 0);
-		//	}
-		//	else if (touchState.y > 108 && touchState.y < 150) {
-		//		GUI_DispStringAt("1", 0, 0);
-		//	}
-		//	else if (touchState.y >= 150 && touchState.y<193) {
-		//		GUI_DispStringAt("2", 0, 0);
-		//	}
-		//	else if (touchState.y >= 193 && touchState.y <= 235) {
-		//		GUI_DispStringAt("3", 0, 0);
-		//	}
-		//	else if (touchState.y >= 235 && touchState.y <= 278) {
-		//		GUI_DispStringAt("4", 0, 0);
-		//	}
-		//	else if (touchState.y >= 278) {
-		//		WM_DeleteWindow(hWnd);
-		//		break;
-		//	}
-		//}
-	}
+	//while (1)
+	//{
+	//	GUI_Delay(20);
+	//}
 
 }
 void W_pageShuyeSetting(void) {
 	WM_HWIN hWnd, hNumPad;
 	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageShuyeSetting, 0);
 	hNumPad = GUI_CreateDialogBox(_aDialogNumPad, GUI_COUNTOF(_aDialogNumPad), _cbDialogNumPad, hWnd, 0, 0); /* Create the numpad dialog */
-
 	WM_SetStayOnTop(hNumPad, 1);
 	createMultipage(&hWnd);
-	GUI_Exec();
-	while (1)
-	{
-		GUI_Delay(50);
-		//GUI_PID_GetState(&touchState);
-		//if (touchState.Pressed == 1) {
-		//	while (touchState.Pressed == 1) {
-		//		GUI_PID_GetState(&touchState);
-		//	}
-		//	if (touchState.y >= 296) {
-		//		if (touchState.x < 120) {
-		//			WM_DeleteWindow(hWnd);
-		//			break;
-		//		}
-		//		else {
-		//			W_pageDisplay();
-		//		}
-		//	}
-		//}
-	}
+	//while (1)
+	//{
+	//	GUI_Delay(50);
+	//
+	//}
 
 }
-void pageShuyeSetting(WM_MESSAGE *pMsg) {
+void W_pageShuyeDisplay(void) {
+	WM_HWIN hWnd;
+	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageShuyeDisplay, 0);
+}
+void pageShuyeDisplay(WM_MESSAGE *pMsg) {
 	WM_PID_STATE_CHANGED_INFO  *pState;
+	GUI_HWIN hItem;
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
 		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_TITLE_BACKGROUND);
 		GUI_Clear();
 
-		//画框
+		//??
+		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_CONTENT);
+		GUI_ClearRect(0, 60.8, 240, 296);
+		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_BOTTON_BACKGROUND);
+		GUI_ClearRect(0, 296, 240, 320);
+		//??
+		GUI_SetPenSize(1);
+		GUI_SetColor(MYCOLOR_LINE);
+		GUI_DrawHLine(60.8, 0, 240);
+		GUI_DrawHLine(119.2, 0, 240);
+		GUI_DrawHLine(177.6, 0, 240);
+		GUI_DrawHLine(236, 0, 240);
+		GUI_DrawHLine(295, 0, 240);
+		GUI_SetColor(GUI_WHITE);
+		GUI_DrawVLine(120, 296, 320);
+		//??
+		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_TITLE_TEXT);
+		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_TITLE_BACKGROUND);
+		GUI_SetFont(&GUI_Font24_1);
+		GUI_DispStringAt("PRE-SETTING", 72, 23.4);
+
+		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT1);
+		GUI_SetBkColor(GUI_WHITE);
+		GUI_SetFont(&GUI_Font16_1);
+		GUI_DispStringAt("ONE", 12.4, 60.8+20.4);
+		GUI_DispStringAt("TWO", 12.4, 119.2+20.4);
+		GUI_DispStringAt("THREE", 12.4, 177.6+20.4);
+		GUI_DispStringAt("FOUR", 12.4, 236+20.4);
+
+		GUI_SetColor(GUI_WHITE);
+		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_BOTTON_BACKGROUND);
+		GUI_DispStringHCenterAt("BACK", 60, 300);
+		GUI_DispStringHCenterAt("CONFIRM", 180, 300);
+
+		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
+		GUI_SetBkColor(GUI_WHITE);
+		GUI_SetFont(&GUI_Font13_1);
+		GUI_DispStringAt("valume:     ml", 110, 60.8 + 4.8);
+		GUI_DispStringAt("valume:     ml", 110, 119.2 + 4.8);
+		GUI_DispStringAt("valume:     ml", 110, 177.6 + 4.8);
+		GUI_DispStringAt("valume:     ml", 110, 236 + 4.8);
+
+		GUI_DispStringAt("sudu:   ml/min",    90.4, 60.8 + 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 90.4, 119.2+ 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 90.4, 177.6+ 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 90.4, 236+ 22);//delt=20
+
+		GUI_DispStringAt("time:            ", 90.4, 60.8 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 90.4, 119.2 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 90.4, 177.6 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 90.4, 236 + 40.8);//delt=20
+
+		GUI_DispStringAt("sudu:   ml/min", 172.8, 60.8 + 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 172.8, 119.2 + 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 172.8, 177.6 + 22);//delt=20
+		GUI_DispStringAt("sudu:            ", 172.8, 236 + 22);//delt=20
+
+		GUI_DispStringAt("time:            ", 172.8, 60.8 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 172.8, 119.2 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 172.8, 177.6 + 40.8);//delt=20
+		GUI_DispStringAt("time:            ", 172.8, 236 + 40.8);//delt=20
+
+	case WM_PID_STATE_CHANGED:
+		pState = (WM_PID_STATE_CHANGED_INFO *)pMsg->Data.p;
+		if ((pState->StatePrev == 0) && (pState->State == 1)) {
+			if (pState->y >= 296) {
+				if (pState->x < 120) {
+					WM_DeleteWindow(pMsg->hWin);
+					W_pageShuyeSetting();
+				}
+				else {
+					WM_DeleteWindow(pMsg->hWin);
+					W_pageDisplay();
+				}
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+void pageShuyeSetting(WM_MESSAGE *pMsg) {
+	WM_PID_STATE_CHANGED_INFO  *pState;
+	GUI_HWIN hItem;
+//	double shuyeData[4][5];
+	switch (pMsg->MsgId)
+	{
+	case WM_PAINT:
+		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_TITLE_BACKGROUND);
+		GUI_Clear();
+
+		//??
 		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_CONTENT);
 		GUI_ClearRect(0, 85, 240, 296);
 		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_BOTTON_BACKGROUND);
 		GUI_ClearRect(0, 296, 240, 320);
-		//画线
+		//??
 		GUI_SetPenSize(1);
 		GUI_SetColor(MYCOLOR_LINE);
 		GUI_DrawHLine(85, 0, 240);
@@ -158,7 +221,7 @@ void pageShuyeSetting(WM_MESSAGE *pMsg) {
 		GUI_DrawHLine(295, 0, 240);
 		GUI_SetColor(GUI_WHITE);
 		GUI_DrawVLine(120, 296, 320);
-		//写字
+		//??
 		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_TITLE_TEXT);
 		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_TITLE_BACKGROUND);
 		GUI_SetFont(&GUI_Font24_1);
@@ -189,6 +252,8 @@ void pageShuyeSetting(WM_MESSAGE *pMsg) {
 		GUI_DispStringAt("valume:        ml", 85, 243);
 		GUI_DispStringAt("time:            ", 85, 263);//delt=20
 
+
+
 	case WM_PID_STATE_CHANGED:
 		pState = (WM_PID_STATE_CHANGED_INFO *)pMsg->Data.p;
 		if ((pState->StatePrev == 0) && (pState->State == 1)) {
@@ -198,8 +263,16 @@ void pageShuyeSetting(WM_MESSAGE *pMsg) {
 					W_pageHome();
 				}
 				else {
+					//save the data
+					for (int i = 0; i < 4; i++) {
+						for (int j = 0; j < 5; j++) {
+							hItem = WM_GetDialogItem(MULTIPAGE_GetWindow(aMultipage, i), GUI_ID_EDIT0+j);
+							EDIT_GetText(hItem, s, 4);
+							sscanf(s, "%lf", &shuyeData[i][j]);
+						}
+					}
 					WM_DeleteWindow(pMsg->hWin);
-					W_pageDisplay();
+					W_pageShuyeDisplay();
 				}
 			}
 		}
@@ -216,19 +289,19 @@ void pageHome(WM_MESSAGE *pMsg) {
 		GUI_SetBkColor(MYCOLOR_PAGEHOME_TITLE_BACKGROUND);
 		GUI_Clear();
 
-		//画框
+		//??
 		GUI_SetBkColor(MYCOLOR_PAGEHOME_SHUYE_BACKGROUND);
 		GUI_ClearRect(0, 197, 240, 259);
 		GUI_SetBkColor(MYCOLOR_PAGEHOME_SYSTEM_BACKGROUND);
 		GUI_ClearRect(0, 259, 240, 320);
 
-		//画线
+		//??
 		GUI_SetPenSize(1);
 		GUI_SetColor(MYCOLOR_LINE);
 		GUI_DrawHLine(197, 0, 240);
 		GUI_DrawHLine(259, 0, 240);
 
-		//写字
+		//??
 		GUI_SetColor(MYCOLOR_PAGEHOME_TITLE_TEXT);
 		GUI_SetBkColor(MYCOLOR_PAGEHOME_TITLE_BACKGROUND);
 		GUI_SetFont(&GUI_Font24_1);
@@ -245,11 +318,11 @@ void pageHome(WM_MESSAGE *pMsg) {
 	case WM_PID_STATE_CHANGED:
 		pState = (WM_PID_STATE_CHANGED_INFO *)pMsg->Data.p;
 		if ((pState->StatePrev == 0) && (pState->State == 1)) {
-			if (pState->y < 259 && pState->y>197) {//输液设置
+			if (pState->y < 259 && pState->y>197) {//????
 				WM_DeleteWindow(pMsg->hWin);
 				W_pageShuyeSetting();
 			}
-			else if (pState->y > 259 && pState->y < 320) {//系统设置
+			else if (pState->y > 259 && pState->y < 320) {//????
 														  //GUI_DispStringAt("1", 0, 0);
 				WM_DeleteWindow(pMsg->hWin);
 				W_pageSetting();
@@ -269,10 +342,10 @@ void pageSetting(WM_MESSAGE *pMsg) {
 		GUI_Clear();
 		GUI_SetFont(&GUI_Font32_ASCII);
 		//GUI_DispString("hello,emwin");
-		//画背景
+		//???
 		GUI_SetBkColor(MYCOLOR_TEXT_BACKGROUND);
 		GUI_ClearRect(0, 109, 240, 320);
-		//画线
+		//??
 		GUI_SetPenSize(1);
 		GUI_SetColor(MYCOLOR_LINE);
 		GUI_DrawHLine(109, 0, 240);
@@ -280,7 +353,7 @@ void pageSetting(WM_MESSAGE *pMsg) {
 		GUI_DrawHLine(193, 0, 240);
 		GUI_DrawLine(0, 235, 240, 235);
 		GUI_DrawHLine(278, 0, 240);
-		//写字
+		//??
 		GUI_SetColor(MYCOLOR_TITLE_TEXT);
 		GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
 		GUI_SetFont(&GUI_Font20_1);
@@ -329,14 +402,14 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
-		//画背景
+		//???
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
 		GUI_Clear();
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BUTTON);
 		GUI_ClearRect(0, 296, 240, 320);
 		GUI_SetColor(GUI_WHITE);
 		GUI_DrawVLine(120, 296, 320);
-		//写字
+		//??
 		GUI_SetFont(&GUI_Font24_1);
 		GUI_SetColor(MYCOLOR_PAGEDISPLAY_TEXT1);
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
@@ -349,13 +422,22 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 		GUI_SetColor(MYCOLOR_PAGEDISPLAY_TEXT3);
 		GUI_DispStringHCenterAt("00:16:26", 175, 206);
 		GUI_DispStringHCenterAt("00:35:51", 175, 262);
-		GUI_DispStringAt("20", 126, 56);//需要大一点的字体
-										//按钮字体
+		GUI_DispStringAt("20", 126, 56);//????????
+										//????
 		GUI_SetFont(&GUI_Font16_1);
 		GUI_SetColor(GUI_WHITE);
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BUTTON);
 		GUI_DispStringHCenterAt("BACK", 60, 300);
 		GUI_DispStringHCenterAt("PAUSE", 180, 300);
+
+		//display
+		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 5; j++) {
+				GUI_DispDecAt(shuyeData[i][j], 30*j, 30*i, 3);
+			}
+		}
+
 
 	case WM_PID_STATE_CHANGED:
 		pState = (WM_PID_STATE_CHANGED_INFO *)pMsg->Data.p;
@@ -378,7 +460,7 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 }
 void createMultipage(WM_HWIN *hWnd) {
 	WM_HWIN pageBottle, hNumPad;
-	MULTIPAGE_Handle aMultipage;
+
 	MULTIPAGE_SKINFLEX_PROPS multipage_skin_SELECTED = {
 		GUI_WHITE,{ GUI_WHITE,GUI_WHITE },{ GUI_WHITE ,GUI_WHITE },0Xe3d7d4,GUI_BLACK
 	};
@@ -390,12 +472,11 @@ void createMultipage(WM_HWIN *hWnd) {
 	GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
 		{ WINDOW_CreateIndirect,    "Dialog 4",               0,            0,   0, 240, 212, FRAMEWIN_CF_MOVEABLE },
 		{ EDIT_CreateIndirect,		"bottle1",     GUI_ID_EDIT0,           90,  16,  40,  20, EDIT_CF_HCENTER },
-		{ EDIT_CreateIndirect,      "time1",       GUI_ID_EDIT1,           50,  50,  40,  20, EDIT_CF_HCENTER },
-		{ EDIT_CreateIndirect,      "time2",       GUI_ID_EDIT2,           170,  50,  40,  20, EDIT_CF_HCENTER },
-		{ EDIT_CreateIndirect,      "speed1",       GUI_ID_EDIT3,           50,  85,  40,  20, EDIT_CF_HCENTER },
-		{ EDIT_CreateIndirect,      "speed2",       GUI_ID_EDIT4,           170,  85,  40,  20, EDIT_CF_HCENTER }
+		{ EDIT_CreateIndirect,      "speed1",       GUI_ID_EDIT1,           50,  50,  40,  20, EDIT_CF_HCENTER },
+		{ EDIT_CreateIndirect,      "speed2",       GUI_ID_EDIT2,           170,  50,  40,  20, EDIT_CF_HCENTER },
+		{ EDIT_CreateIndirect,      "time1",       GUI_ID_EDIT3,           50,  85,  40,  20, EDIT_CF_HCENTER },
+		{ EDIT_CreateIndirect,      "time2",       GUI_ID_EDIT4,           170,  85,  40,  20, EDIT_CF_HCENTER }
 	};
-
 
 	MULTIPAGE_SetDefaultSkin(MULTIPAGE_SKIN_FLEX);
 
@@ -404,11 +485,6 @@ void createMultipage(WM_HWIN *hWnd) {
 
 	aMultipage = MULTIPAGE_CreateEx(0, 84, 240, 212, *hWnd, WM_CF_SHOW, 0, 0);
 	MULTIPAGE_SetFont(aMultipage, &GUI_Font16B_1);
-//	MULTIPAGE_SetSkin(aMultipage, _MultipageSkin);
-//	MULTIPAGE_SetAlign(aMultipage, MULTIPAGE_ALIGN_BOTTOM | MULTIPAGE_ALIGN_LEFT); //左下方
-//	MULTIPAGE_SetRotation(aMultipage, WIDGET_STATE_VERTICAL); //旋转
-	//	pageBottle = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), NULL, WM_UNATTACHED, 0, 0);
-	//pageBottle = WM_CreateWindow(0, 0, 240, 212, WM_CF_SHOW, _cbBottle1, 0);
 	pageBottle = GUI_CreateDialogBox(_aDialogCreate4, GUI_COUNTOF(_aDialogCreate4), _cbBottle4, WM_UNATTACHED, 0, 0);
 	MULTIPAGE_AddPage(aMultipage, pageBottle, "     1      ");
 	pageBottle = GUI_CreateDialogBox(_aDialogCreate4, GUI_COUNTOF(_aDialogCreate4), _cbBottle4, WM_UNATTACHED, 0, 0);
@@ -417,7 +493,135 @@ void createMultipage(WM_HWIN *hWnd) {
 	MULTIPAGE_AddPage(aMultipage, pageBottle, "     3      ");
 	pageBottle = GUI_CreateDialogBox(_aDialogCreate4, GUI_COUNTOF(_aDialogCreate4), _cbBottle4, WM_UNATTACHED, 0, 0);
 	MULTIPAGE_AddPage(aMultipage, pageBottle, "     4      ");
+	MULTIPAGE_SelectPage(aMultipage, 0);
 
+}
+void _cbBottle4(WM_MESSAGE *pMsg) {
+	WM_HWIN hEdit, hEdit1;
+	unsigned Id;
+	int NCode;
+	char buff[5],c_valume[4];
+	char sDest[10];
+	switch (pMsg->MsgId)
+	{
+	case WM_PAINT:
+		GUI_SetBkColor(GUI_WHITE);
+		GUI_Clear();
+		GUI_SetFont(&GUI_Font20_1);
+		GUI_SetColor(GUI_BLACK);
+		GUI_DispStringAt("bottle1:", 16, 16);
+		GUI_SetFont(&GUI_Font16_1);
+		GUI_DispStringAt("ML", 130, 16);
+		GUI_SetFont(&GUI_Font16_1);
+		GUI_DispStringAt("speed1:", 5, 50);
+		GUI_DispStringAt("ml/s", 90, 50);
+		GUI_DispStringAt("time1:", 5, 85);
+		GUI_DispStringAt("min", 90, 85);
+		GUI_DispStringAt("speed2:", 125, 50);
+		GUI_DispStringAt("ml/s", 210, 50);
+		GUI_DispStringAt("time2:", 125, 85);
+		GUI_DispStringAt("min", 210, 85);
+		break;
+	case WM_INIT_DIALOG:
+		index++;
+		for (int i = 0; i < 5; i++) {
+			hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0 + i);
+			EDIT_SetMaxLen(hEdit, 4);
+			WIDGET_SetEffect(hEdit, &WIDGET_Effect_None);
+			
+			//if (!_pEditCallback) {
+			//	_pEditCallback = WM_SetCallback(hEdit, _cbEdit); // Overwrite callback function and remember original function
+			//}
+			//else {
+			//	WM_SetCallback(hEdit, _cbEdit);                  // Overwrite callback function
+			//}
+			//EDIT_SetDecMode(hEdit,0,0,9999,1, GUI_EDIT_NORMAL);
+
+			//?????
+			sprintf(buff, "%.1f", shuyeData[index-1][i]);
+			EDIT_SetText(hEdit, buff);
+		}
+		MULTIPAGE_GetSelection(aMultipage);
+		break;
+	case WM_NOTIFY_PARENT:
+		Id = WM_GetId(pMsg->hWinSrc);      /* Id of widget */
+		NCode = pMsg->Data.v;                 /* Notification code */
+		switch (NCode)
+		{
+		case WM_NOTIFICATION_VALUE_CHANGED:
+			hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
+			EDIT_GetText(hEdit1, c_valume, 4);
+			sscanf(c_valume, "%lf", &data[0]);
+			for (int i = 0; i < 5; i++) {   // save the data to data[5]
+				hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0+i);
+				EDIT_GetText(hEdit, buff, 5);
+				sscanf(buff, "%lf", &data[i]);
+			}
+			switch (Id)
+			{
+			case GUI_ID_EDIT0:
+				data[1] = data[2] = data[3] = data[4] = 0;
+				break;
+			case GUI_ID_EDIT1:
+				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
+				if (data[1] != 0) {
+					data[3] = data[0] / data[1];
+					sprintf(buff, "%.1f", data[3]);
+				}
+				else {
+					sprintf(buff, "%s", "err");
+				}
+				EDIT_SetText(hEdit1, buff);
+				//break;
+			case GUI_ID_EDIT3:
+				data[2] = 5;
+				if (data[3] * data[1] > data[0]) {
+					data[3] = data[0] / data[1];
+					hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
+					sprintf(buff, "%.1f", data[3]);
+					EDIT_SetText(hEdit1, buff);
+				}
+			case GUI_ID_EDIT2:
+				if (data[0] - data[1] * data[3] <= 0) {
+					data[4] = 0;
+					data[2] = 0;
+					//data[1] = data[0] / data[3];
+				}
+				else {
+					data[4] = (data[0] - data[1] * data[3]) / data[2];
+				}
+				//hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT1);
+				//sprintf(buff, "%.1f", data[1]);
+				//EDIT_SetText(hEdit1, buff);
+				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT2);
+				sprintf(buff, "%.1f", data[2]);
+				EDIT_SetText(hEdit1, buff);
+				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT4);
+				sprintf(buff, "%.1f", data[4]);
+				EDIT_SetText(hEdit1, buff);
+				//break;
+			
+				
+			default:
+
+				break;
+			}
+			//EDIT_GetText(hEdit, s, 5);
+			//index = MULTIPAGE_GetSelection(aMultipage);
+
+			//sprintf(sDest,"%d",index);
+			//hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
+			//EDIT_SetText(hEdit, sDest);
+
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		WM_DefaultProc(pMsg);
+		break;
+	}
 }
 void _cbDialogNumPad(WM_MESSAGE * pMsg) {
 	unsigned i;
@@ -454,7 +658,7 @@ void _cbDialogNumPad(WM_MESSAGE * pMsg) {
 					}
 					else {
 						//Key = _aKey[Id - GUI_ID_USER - 11];
-						Key = (int)'0';                        /* Get the text from the array */
+						Key = GUI_KEY_BACKSPACE;                        /* Get the text from the array */
 					}
 					GUI_SendKeyMsg(Key, Pressed);                                /* Send a key message to the focussed window */
 				}
@@ -462,64 +666,6 @@ void _cbDialogNumPad(WM_MESSAGE * pMsg) {
 			}
 		default:
 			WM_DefaultProc(pMsg);
-	}
-}
-void _cbBottle4(WM_MESSAGE *pMsg) {
-	WM_HWIN hEdit;
-	unsigned Id;
-	int NCode;
-	char s[5];
-	switch (pMsg->MsgId)
-	{
-	case WM_PAINT:
-		GUI_SetBkColor(GUI_WHITE);
-		GUI_Clear();
-		GUI_SetFont(&GUI_Font20_1);
-		GUI_SetColor(GUI_BLACK);
-		GUI_DispStringAt("bottle1:", 16, 16);
-		GUI_SetFont(&GUI_Font16_1);
-		GUI_DispStringAt("ML", 130, 16);
-		GUI_SetFont(&GUI_Font16_1);
-		GUI_DispStringAt("time1:", 5, 50);
-		GUI_DispStringAt("min", 90, 50);
-		GUI_DispStringAt("speed:", 5, 85);
-		GUI_DispStringAt("ml/s", 90, 85);
-		GUI_DispStringAt("time2:", 125, 50);
-		GUI_DispStringAt("min", 210, 50);
-		GUI_DispStringAt("speed:", 125, 85);
-		GUI_DispStringAt("ml/s", 210, 85);
-		break;
-	case WM_INIT_DIALOG:
-		for (int i = 0; i < 5; i++) {
-			hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0 + i);
-			if (!_pEditCallback) {
-				_pEditCallback = WM_SetCallback(hEdit, _cbEdit); // Overwrite callback function and remember original function
-			}
-			else {
-				WM_SetCallback(hEdit, _cbEdit);                  // Overwrite callback function
-			}
-			WIDGET_SetEffect(hEdit, &WIDGET_Effect_None);
-			//EDIT_SetDecMode(hEdit,0,0,9999,1, GUI_EDIT_NORMAL);
-		}
-		break;
-	case WM_NOTIFY_PARENT:
-		Id = WM_GetId(pMsg->hWinSrc);      /* Id of widget */
-		NCode = pMsg->Data.v;                 /* Notification code */
-		switch (NCode)
-		{
-		case WM_NOTIFICATION_VALUE_CHANGED:
-			hEdit = WM_GetDialogItem(pMsg->hWin, Id);
-			EDIT_GetText(hEdit, s, 5);
-			hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
-			EDIT_SetText(hEdit, s);
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		WM_DefaultProc(pMsg);
-		break;
 	}
 }
 void _cbEditAddKey(EDIT_Handle hObj, int Key) {
@@ -598,11 +744,11 @@ void _cbBottle1(WM_MESSAGE *pMsg) {
 		GUI_DispStringAt("speed:", 125, 85);
 		GUI_DispStringAt("ml/s", 210, 85);
 		btext=EDIT_CreateEx(90, 16, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		timeText1 = EDIT_CreateEx(50, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		timeText2 = EDIT_CreateEx(170, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		speedText1 = EDIT_CreateEx(50, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		speedText2 = EDIT_CreateEx(170, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		//WIDGET_SetEffect(btext,&WIDGET_Effect_None);//取消边框
+		EDIT_CreateEx(50, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(170, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(50, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(170, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		//WIDGET_SetEffect(btext,&WIDGET_Effect_None);//????
 		//_mCreatSpinBox(90,10,70,20,pMsg->hWin, WM_CF_SHOW,0,0,999);
 		//SPINBOX_SetFont(sbxCubage, &GUI_Font13HB_1);
 

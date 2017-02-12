@@ -18,6 +18,7 @@
 #include "DIALOG.h"
 #include "usmart.h"
 #include "image2lcd.h"
+#include <stdio.h>
 #define MYCOLOR_TITLE_BACKGROUND 0Xf1edec
 #define MYCOLOR_TEXT_BACKGROUND 0Xffffff
 #define MYCOLOR_TITLE_TEXT 0X3e4040
@@ -42,15 +43,14 @@
 
 #define MULTIPAGE_PI_ENABLED MULTIPAGE_SKINFLEX_PI_ENABLED
 
-//窗口句柄
-static WM_HWIN _hWindow1;  	//窗口1
-static WM_HWIN _hWindow2;	//窗口2
-static WM_HWIN _hChild1;		//子窗口1
+
+
 static WM_CALLBACK * _pEditCallback;
 void pageSetting(WM_MESSAGE *pMsg);
 void pageHome(WM_MESSAGE *pMsg);
 void pageShuyeSetting(WM_MESSAGE *pMsg);
 void pageDisplay(WM_MESSAGE *pMsg);
+void pageShuyeDisplay(WM_MESSAGE *pMsg);
 void _cbBottle1(WM_MESSAGE *pMsg);
 void _cbBottle4(WM_MESSAGE *pMsg);
 void _cbDialogNumPad(WM_MESSAGE *pMsg);
@@ -60,7 +60,11 @@ void W_pageHome(void);
 void W_pageShuyeSetting(void);
 void W_pageSetting(void);
 void W_pageDisplay(void);
+void W_pageShuyeDisplay(void);
 void test_multipage(void);
 void createMultipage(HBWIN *);
 void _MultipageSkin(WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 void _mCreatSpinBox(int x0, int y0, int xSize, int ySize, GUI_HWIN hParent, int WinFlags, int Id, int Min, int Max);
+
+
+void MainTask(void);
