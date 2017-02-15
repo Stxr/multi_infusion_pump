@@ -43,8 +43,6 @@
 
 #define MULTIPAGE_PI_ENABLED MULTIPAGE_SKINFLEX_PI_ENABLED
 
-
-
 static WM_CALLBACK * _pEditCallback;
 void pageSetting(WM_MESSAGE *pMsg);
 void pageHome(WM_MESSAGE *pMsg);
@@ -56,13 +54,14 @@ void _cbBottle4(WM_MESSAGE *pMsg);
 void _cbDialogNumPad(WM_MESSAGE *pMsg);
 void _cbEdit(WM_MESSAGE * pMsg);
 void _cbEditAddKey(EDIT_Handle hObj, int Key);
+void _cbchild1(WM_MESSAGE *pMsg);
 void W_pageHome(void);
-void W_pageShuyeSetting(void);
+void W_pageShuyeSetting(int page);
 void W_pageSetting(void);
 void W_pageDisplay(void);
 void W_pageShuyeDisplay(void);
 void test_multipage(void);
-void createMultipage(HBWIN *);
+void createMultipage(WM_HWIN *hWnd, int *page);
 void _MultipageSkin(WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 void _mCreatSpinBox(int x0, int y0, int xSize, int ySize, GUI_HWIN hParent, int WinFlags, int Id, int Min, int Max);
 
