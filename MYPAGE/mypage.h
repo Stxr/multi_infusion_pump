@@ -64,6 +64,6 @@ void test_multipage(void);
 void createMultipage(WM_HWIN *hWnd, int *page);
 void _MultipageSkin(WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 void _mCreatSpinBox(int x0, int y0, int xSize, int ySize, GUI_HWIN hParent, int WinFlags, int Id, int Min, int Max);
-
+void my_creatBlock(int x0,int y0,int xSize,int ySize,int id,int color);
 
 void MainTask(void);
