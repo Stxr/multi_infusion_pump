@@ -65,6 +65,6 @@ void test_multipage(void);
 void createMultipage(HBWIN *);
 void _MultipageSkin(WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 void _mCreatSpinBox(int x0, int y0, int xSize, int ySize, GUI_HWIN hParent, int WinFlags, int Id, int Min, int Max);
-
+void _cbchild1(WM_MESSAGE *pMsg);
 
 void MainTask(void);

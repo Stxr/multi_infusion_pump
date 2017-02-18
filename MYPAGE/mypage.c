@@ -1,7 +1,7 @@
 #include "mypage.h"
 double shuyeData[4][5];
 char s[5];
-int index=0;
+int my_index=0;
 double data[5];
 MULTIPAGE_Handle aMultipage;
 static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
@@ -44,7 +44,7 @@ void MainTask(void) {
 }
 void W_pageDisplay(void) {
 	WM_HWIN hWnd;
-	index = 0;
+	my_index = 0;
 	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
 	GUI_Exec();
 	//while (1)
@@ -104,11 +104,13 @@ void W_pageShuyeSetting(void) {
 }
 void W_pageShuyeDisplay(void) {
 	WM_HWIN hWnd;
+	my_index=0;
 	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageShuyeDisplay, 0);
 }
 void pageShuyeDisplay(WM_MESSAGE *pMsg) {
 	WM_PID_STATE_CHANGED_INFO  *pState;
 	GUI_HWIN hItem;
+	char tempt[20];
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
@@ -152,30 +154,50 @@ void pageShuyeDisplay(WM_MESSAGE *pMsg) {
 		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
 		GUI_SetBkColor(GUI_WHITE);
 		GUI_SetFont(&GUI_Font13_1);
-		GUI_DispStringAt("valume:     ml", 110, 60.8 + 4.8);
-		GUI_DispStringAt("valume:     ml", 110, 119.2 + 4.8);
-		GUI_DispStringAt("valume:     ml", 110, 177.6 + 4.8);
-		GUI_DispStringAt("valume:     ml", 110, 236 + 4.8);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[0][0]);
+		GUI_DispStringAt(tempt, 110, 60.8 + 4.8);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[1][0]);
+		GUI_DispStringAt(tempt, 110, 119.2 + 4.8);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[2][0]);
+		GUI_DispStringAt(tempt, 110, 177.6 + 4.8);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[3][0]);
+		GUI_DispStringAt(tempt, 110, 236 + 4.8);
 
-		GUI_DispStringAt("sudu:   ml/min",    90.4, 60.8 + 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 90.4, 119.2+ 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 90.4, 177.6+ 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 90.4, 236+ 22);//delt=20
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[0][1]);
+		GUI_DispStringAt(tempt,    90.4, 60.8 + 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[1][1]);
+		GUI_DispStringAt(tempt, 90.4, 119.2+ 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[2][1]);
+		GUI_DispStringAt(tempt, 90.4, 177.6+ 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[3][1]);
+		GUI_DispStringAt(tempt, 90.4, 236+ 22);
 
-		GUI_DispStringAt("time:            ", 90.4, 60.8 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 90.4, 119.2 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 90.4, 177.6 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 90.4, 236 + 40.8);//delt=20
+		sprintf(tempt, "time: %.1f min", shuyeData[0][3]);
+		GUI_DispStringAt(tempt, 90.4, 60.8 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[1][3]);
+		GUI_DispStringAt(tempt, 90.4, 119.2 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[2][3]);
+		GUI_DispStringAt(tempt, 90.4, 177.6 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[3][3]);
+		GUI_DispStringAt(tempt, 90.4, 236 + 40.8);
 
-		GUI_DispStringAt("sudu:   ml/min", 172.8, 60.8 + 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 172.8, 119.2 + 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 172.8, 177.6 + 22);//delt=20
-		GUI_DispStringAt("sudu:            ", 172.8, 236 + 22);//delt=20
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[0][2]);
+		GUI_DispStringAt(tempt, 172.8, 60.8 + 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[1][2]);
+		GUI_DispStringAt(tempt, 172.8, 119.2 + 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[2][2]);
+		GUI_DispStringAt(tempt, 172.8, 177.6 + 22);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[3][2]);
+		GUI_DispStringAt(tempt, 172.8, 236 + 22);
 
-		GUI_DispStringAt("time:            ", 172.8, 60.8 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 172.8, 119.2 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 172.8, 177.6 + 40.8);//delt=20
-		GUI_DispStringAt("time:            ", 172.8, 236 + 40.8);//delt=20
+		sprintf(tempt, "time: %.1f min", shuyeData[0][4]);
+		GUI_DispStringAt(tempt, 172.8, 60.8 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[1][4]);
+		GUI_DispStringAt(tempt, 172.8, 119.2 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[2][4]);
+		GUI_DispStringAt(tempt, 172.8, 177.6 + 40.8);
+		sprintf(tempt, "time: %.1f min", shuyeData[3][4]);
+		GUI_DispStringAt(tempt, 172.8, 236 + 40.8);
 
 	case WM_PID_STATE_CHANGED:
 		pState = (WM_PID_STATE_CHANGED_INFO *)pMsg->Data.p;
@@ -431,12 +453,12 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 		GUI_DispStringHCenterAt("PAUSE", 180, 300);
 
 		//display
-		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 5; j++) {
-				GUI_DispDecAt(shuyeData[i][j], 30*j, 30*i, 3);
-			}
-		}
+//		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 5; j++) {
+//				GUI_DispDecAt(shuyeData[i][j], 30*j, 30*i, 3);
+//			}
+//		}
 
 
 	case WM_PID_STATE_CHANGED:
@@ -523,12 +545,12 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 		GUI_DispStringAt("min", 210, 85);
 		break;
 	case WM_INIT_DIALOG:
-		index++;
+		my_index++;
 		for (int i = 0; i < 5; i++) {
 			hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0 + i);
 			EDIT_SetMaxLen(hEdit, 4);
 			WIDGET_SetEffect(hEdit, &WIDGET_Effect_None);
-			
+
 			//if (!_pEditCallback) {
 			//	_pEditCallback = WM_SetCallback(hEdit, _cbEdit); // Overwrite callback function and remember original function
 			//}
@@ -537,8 +559,13 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 			//}
 			//EDIT_SetDecMode(hEdit,0,0,9999,1, GUI_EDIT_NORMAL);
 
-			//?????
-			sprintf(buff, "%.1f", shuyeData[index-1][i]);
+			//初始化数据
+			if (shuyeData[my_index - 1][i] != 0) {
+				sprintf(buff, "%.1f", shuyeData[my_index - 1][i]);
+			}
+			else {
+				sprintf(buff, "\0", shuyeData[my_index - 1][i]);
+			}
 			EDIT_SetText(hEdit, buff);
 		}
 		MULTIPAGE_GetSelection(aMultipage);
@@ -600,16 +627,16 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 				sprintf(buff, "%.1f", data[4]);
 				EDIT_SetText(hEdit1, buff);
 				//break;
-			
-				
+
+
 			default:
 
 				break;
 			}
 			//EDIT_GetText(hEdit, s, 5);
-			//index = MULTIPAGE_GetSelection(aMultipage);
+			//my_index = MULTIPAGE_GetSelection(aMultipage);
 
-			//sprintf(sDest,"%d",index);
+			//sprintf(sDest,"%d",my_index);
 			//hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
 			//EDIT_SetText(hEdit, sDest);
 

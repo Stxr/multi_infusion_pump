@@ -17,30 +17,52 @@ Library Manager: ArmAr.exe V5.06 update 3 (build 300)
 Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
 CPU DLL:         SARMCM3.DLL V5.21a
 Dialog DLL:      DCM.DLL V1.13.8.0
-Target DLL:      UL2CM3.DLL V1.158.5.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
 D:\Documents\Me\´óÌô\multi_infusion_pump\USER\Template.uvprojx
-Project File Date:  01/13/2017
+Project File Date:  02/18/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 3 (build 300)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling main.c...
-..\MYPAGE\mypage.h(70): warning:  #1-D: last line of file ends without a newline
-  void MainTask(void);
-main.c(223): warning:  #177-D: variable "touchState" was declared but never referenced
-  	GUI_PID_STATE touchState;//´¥??×´Ì¬
-main.c(225): warning:  #550-D: variable "buff" was set but never used
-  	char *buff;
-main.c(226): warning:  #177-D: variable "num" was declared but never referenced
-  	unsigned int num;
-main.c: 4 warnings, 0 errors
+compiling mypage.c...
+..\MYPAGE\mypage.c(46): warning:  #550-D: variable "hWnd" was set but never used
+  	WM_HWIN hWnd;
+..\MYPAGE\mypage.c(56): warning:  #550-D: variable "hWnd" was set but never used
+  	WM_HWIN hWnd;
+..\MYPAGE\mypage.c(80): warning:  #550-D: variable "hWnd" was set but never used
+  	WM_HWIN hWnd;
+..\MYPAGE\mypage.c(81): warning:  #177-D: variable "touchState" was declared but never referenced
+  	GUI_PID_STATE touchState;
+..\MYPAGE\mypage.c(106): warning:  #550-D: variable "hWnd" was set but never used
+  	WM_HWIN hWnd;
+..\MYPAGE\mypage.c(112): warning:  #177-D: variable "hItem" was declared but never referenced
+  	GUI_HWIN hItem;
+..\MYPAGE\mypage.c(484): warning:  #177-D: variable "hNumPad" was declared but never referenced
+  	WM_HWIN pageBottle, hNumPad;
+..\MYPAGE\mypage.c(567): warning:  #225-D: the format string ends before this argument
+  				sprintf(buff, "\0", shuyeData[my_index - 1][i]);
+..\MYPAGE\mypage.c(526): warning:  #177-D: variable "sDest" was declared but never referenced
+  	char sDest[10];
+..\MYPAGE\mypage.c(658): warning:  #177-D: variable "hDlg" was declared but never referenced
+  	WM_HWIN  hDlg;
+..\MYPAGE\mypage.c(753): warning:  #550-D: variable "btext" was set but never used
+  	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
+..\MYPAGE\mypage.c(753): warning:  #177-D: variable "timeText1" was declared but never referenced
+  	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
+..\MYPAGE\mypage.c(753): warning:  #177-D: variable "timeText2" was declared but never referenced
+  	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
+..\MYPAGE\mypage.c(753): warning:  #177-D: variable "speedText1" was declared but never referenced
+  	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
+..\MYPAGE\mypage.c(753): warning:  #177-D: variable "speedText2" was declared but never referenced
+  	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
+..\MYPAGE\mypage.c: 15 warnings, 0 errors
 linking...
-Program Size: Code=161906 RO-data=66014 RW-data=2124 ZI-data=46860  
+Program Size: Code=162174 RO-data=66014 RW-data=2124 ZI-data=46860  
 FromELF: creating hex file...
-"..\OBJ\MALLOC.axf" - 0 Error(s), 4 Warning(s).
+"..\OBJ\MALLOC.axf" - 0 Error(s), 15 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   D:\Documents\Me\´óÌô\multi_infusion_pump\USER\RTE
