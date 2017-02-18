@@ -3,11 +3,21 @@ double shuyeData[4][5];
 char s[5];
 int my_index=0;
 double data[5];
+unsigned int testdata=0,testdata1=0;
 MULTIPAGE_Handle aMultipage;
+
 typedef struct {
 	U32 color;
 	int id;
 }mydata;
+
+  mydata data_send[4] = { { GUI_GREEN ,1 },{ GUI_GREEN ,2 },{ GUI_GREEN ,3 },{ GUI_GREEN ,4 } };
+	mydata data1;
+	WM_HTIMER hTimer;
+	char buffer_left[20],buffer_used[20],buffer_speed[4];
+	unsigned short int id_bottle = 0;
+	WM_HWIN hchild[4];
+	int speed=0;
 static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
 	//
 	//  Function                 Text      Id					 Px   Py   Dx   Dy
@@ -440,53 +450,48 @@ void _cbchild1(WM_MESSAGE *pMsg) {
 
 void pageDisplay(WM_MESSAGE *pMsg) {
 	WM_PID_STATE_CHANGED_INFO  *pState;
-  mydata data_send[4] = { { GUI_GREEN ,1 },{ GUI_GREEN ,2 },{ GUI_GREEN ,3 },{ GUI_GREEN ,4 } };
-	mydata data;
-	static WM_HTIMER hTimer;
-	static char buffer_left[20],buffer_used[20],buffer_speed[4];
-	static int id_bottle = 0;
-	static WM_HWIN hchild[4];
-	int speed=0;
+
 //	int testdata = 0,testdata1=0;
 	switch (pMsg->MsgId)
 	{
 		case WM_TIMER:
-//			if (shuyeData[id_bottle][0] == 0 || (shuyeData[id_bottle][3] == 0 && shuyeData[id_bottle][4] == 0)) {
-//				id_bottle++;
-//				if (id_bottle >= 4) id_bottle = 0;
-//			}
-//			if (shuyeData[id_bottle][3] > 0 || shuyeData[id_bottle][4] > 0) { //剩余输液时间是否为0
-//				testdata1++;
-//				if (shuyeData[id_bottle][3] != 0) {
-	//				testdata = --shuyeData[id_bottle][3];
-//					speed = shuyeData[id_bottle][1];
-//			}
-//			else {
-//				data.color = GUI_BLUE;
-//				data.id = id_bottle+1;
-				//WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
-//				testdata = --shuyeData[id_bottle][4];
-//				speed = shuyeData[id_bottle][2];
-//			}
-//			if (shuyeData[id_bottle][4] == 0 && shuyeData[id_bottle][3]==0) {
-//				data.color = GUI_BLACK;
-//				data.id = id_bottle+1;
-//				//WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
-//			}
-//		}
-//		sprintf(buffer_speed, "%d", speed);
-//		sprintf(buffer_left, "%02d:%02d:%02d", testdata / 3600, testdata / 60, testdata%60);
-//		sprintf(buffer_used, "%02d:%02d:%02d", testdata1 / 3600, testdata1 / 60, testdata1 % 60);
+			if (shuyeData[id_bottle][0] == 0 || (shuyeData[id_bottle][3] == 0 && shuyeData[id_bottle][4] == 0)) {
+				id_bottle++;
+				if (id_bottle >= 4) id_bottle = 0;
+			}
+			if (shuyeData[id_bottle][3] > 0 || shuyeData[id_bottle][4] > 0) { //剩余输液时间是否为0
+				testdata1++;
+				if (shuyeData[id_bottle][3] != 0) {
+					testdata = --shuyeData[id_bottle][3];
+					speed = shuyeData[id_bottle][1];
+			}
+			else {
+				data1.color = GUI_BLUE;
+				data1.id = id_bottle+1;
+				WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
+				testdata = --shuyeData[id_bottle][4];
+				speed = shuyeData[id_bottle][2];
+			}
+			if (shuyeData[id_bottle][4] == 0 && shuyeData[id_bottle][3]==0) {
+				data1.color = GUI_BLACK;
+				data1.id = id_bottle+1;
+				WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
+			}
+		}
+		sprintf(buffer_speed, "%d", speed);
+		sprintf(buffer_left, "%02d:%02d:%02d", testdata / 3600, testdata / 60, testdata%60);
+		sprintf(buffer_used, "%02d:%02d:%02d", testdata1 / 3600, testdata1 / 60, testdata1 % 60);
 		//testdata--;
-		//if (testdata1 % 2) {
-		//	WM_HideWindow(hchild[id_bottle]);
-		//}
-		//else {
-		//	WM_ShowWindow(hchild[id_bottle]);
-		//}
+		if (testdata1 % 2) {
+			WM_HideWindow(hchild[id_bottle]);
+		}
+		else {
+			WM_ShowWindow(hchild[id_bottle]);
+		}
 		WM_InvalidateWindow(pMsg->hWin); //使窗口无效，从而进行更新
 		WM_RestartTimer(hTimer, 1000);
 		break;
+		
 		case WM_PAINT:
 		//画背景
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
