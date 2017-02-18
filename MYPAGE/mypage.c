@@ -1,14 +1,22 @@
 #include "mypage.h"
-
+float shuyeData[4][5];
+int my_index=0;
+float data[5];
+int testdata = 0,testdata1=0;
+MULTIPAGE_Handle aMultipage;
 typedef struct {
 	U32 color;
 	int id;
 }mydata;
-float shuyeData[4][5];
-int my_index=0;
-float data[5];//界面数据
-int testdata = 0,testdata1=0;
-MULTIPAGE_Handle aMultipage;
+char buffer_left[20], buffer_used[20], buffer_speed[4];
+mydata data_send[4] = { { GUI_GREEN ,1 },{ GUI_GREEN ,2 },{ GUI_GREEN ,3 },{ GUI_GREEN ,4 } };
+mydata change_data;
+WM_HTIMER hTimer;
+
+int id_bottle = 0;
+WM_HWIN hchild[4];
+int speed = 0;
+
 
 static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
 	//
@@ -50,24 +58,22 @@ void MainTask(void) {
 	}
 }
 void W_pageDisplay(void) {
-	WM_HWIN hWnd;
-	int i;
-	WM_HTIMER hTimer;
 	my_index = 0; //很神奇
-	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
+	WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
 }
 void W_pageHome(void) {
-	WM_HWIN hWnd;
-	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageHome, 0);
+	WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageHome, 0);
 	GUI_Exec();
 }
 void W_pageSetting(void) {
-	WM_HWIN hWnd;
-	GUI_PID_STATE touchState;
-	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageSetting, 0);
+	WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageSetting, 0);
 	GUI_Exec();
 	GUI_SetColor(MYCOLOR_TITLE_TEXT);
 	GUI_SetBkColor(MYCOLOR_TITLE_BACKGROUND);
+	//while (1)
+	//{
+	//	GUI_Delay(20);
+	//}
 
 }
 void W_pageShuyeSetting(int page) {
@@ -79,13 +85,11 @@ void W_pageShuyeSetting(int page) {
 
 }
 void W_pageShuyeDisplay(void) {
-	WM_HWIN hWnd;
 	my_index = 0; //很神奇
-	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageShuyeDisplay, 0);
+	WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageShuyeDisplay, 0);
 }
 void _cbchild1(WM_MESSAGE *pMsg) {
 	mydata data_receive;
-	static int flag=0;
 	char id[2];
 	switch (pMsg->MsgId)
 	{
@@ -105,15 +109,46 @@ void _cbchild1(WM_MESSAGE *pMsg) {
 }
 void pageDisplay(WM_MESSAGE *pMsg) {
 	WM_PID_STATE_CHANGED_INFO  *pState;
-    mydata data_send[4] = { { GUI_GREEN ,1 },{ GUI_GREEN ,2 },{ GUI_GREEN ,3 },{ GUI_GREEN ,4 } };
-	mydata data;
-	static WM_HTIMER hTimer;
-	static char buffer_left[20],buffer_used[20],buffer_speed[4];
-	static int id_bottle = 0;
-	static WM_HWIN hchild[4];
-	int speed=0;
 	switch (pMsg->MsgId)
 	{
+	case WM_TIMER:
+		if (shuyeData[id_bottle][0] == 0 || (shuyeData[id_bottle][3] == 0 && shuyeData[id_bottle][4] == 0)) {
+			id_bottle++;
+			if (id_bottle >= 4) id_bottle = 0;
+		}
+		if (shuyeData[id_bottle][3] > 0 || shuyeData[id_bottle][4] > 0) { //剩余输液时间是否为0
+			testdata1++;
+			if (shuyeData[id_bottle][3] != 0) {
+ 				testdata = --shuyeData[id_bottle][3];
+				speed = shuyeData[id_bottle][1];
+			}
+			else {
+				change_data.color = GUI_BLUE;
+				change_data.id = id_bottle+1;
+				WM_SetUserData(hchild[id_bottle], &change_data, sizeof(mydata));
+				testdata = --shuyeData[id_bottle][4];
+				speed = shuyeData[id_bottle][2];
+			}
+			if (shuyeData[id_bottle][4] == 0 && shuyeData[id_bottle][3]==0) {
+				change_data.color = GUI_BLACK;
+				change_data.id = id_bottle+1;
+				WM_SetUserData(hchild[id_bottle], &change_data, sizeof(mydata));
+			}
+		}
+		sprintf(buffer_speed, "%d", speed);
+		sprintf(buffer_left, "%02d:%02d:%02d", testdata / 3600, testdata / 60, testdata%60);
+		sprintf(buffer_used, "%02d:%02d:%02d", testdata1 / 3600, testdata1 / 60, testdata1 % 60);
+		//testdata--;
+		if (testdata1 % 2) {
+			WM_HideWindow(hchild[id_bottle]);
+		}
+		else {
+			WM_ShowWindow(hchild[id_bottle]);
+		}
+		WM_InvalidateWindow(pMsg->hWin); //使窗口无效，从而进行更新
+		WM_RestartTimer(hTimer, 1000);
+		break;
+
 	case WM_PAINT:
 		//画背景
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
@@ -144,7 +179,9 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 		GUI_DispStringHCenterAt("BACK", 60, 300);
 		GUI_DispStringHCenterAt("PAUSE", 180, 300);
 
-    hTimer = WM_CreateTimer(pMsg->hWin, 0, 1000, 0);
+		break;
+	case WM_CREATE:
+		hTimer = WM_CreateTimer(pMsg->hWin, 0, 1000, 0);
 		for (int i = 0; i < 4; i++) {
 			if (shuyeData[i][0] == 0)continue;//如果容量为0，则不创建
 			hchild[i] = WM_CreateWindowAsChild(129 + i * 26, 126, 18, 18, pMsg->hWin, WM_CF_SHOW, _cbchild1, sizeof(mydata));
@@ -158,43 +195,6 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 		//		GUI_DispDecAt(shuyeData[i][j], 50*j, 50*i, 5);
 		//	}
 		//}
-		break;
-	case WM_TIMER:
-		if (shuyeData[id_bottle][0] == 0 || (shuyeData[id_bottle][3] == 0 && shuyeData[id_bottle][4] == 0)) {
-			id_bottle++;
-			if (id_bottle >= 4) id_bottle = 0;
-		}
-		if (shuyeData[id_bottle][3] > 0 || shuyeData[id_bottle][4] > 0) { //剩余输液时间是否为0
-			testdata1++;
-			if (shuyeData[id_bottle][3] != 0) {
- 				testdata = --shuyeData[id_bottle][3];
-				speed = shuyeData[id_bottle][1];
-			}
-			else {
-				data.color = GUI_BLUE;
-				data.id = id_bottle+1;
-				WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
-				testdata = --shuyeData[id_bottle][4];
-				speed = shuyeData[id_bottle][2];
-			}
-			if (shuyeData[id_bottle][4] == 0 && shuyeData[id_bottle][3]==0) {
-				data.color = GUI_BLACK;
-				data.id = id_bottle+1;
-				WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
-			}
-		}
-		sprintf(buffer_speed, "%d", speed);
-		sprintf(buffer_left, "%02d:%02d:%02d", testdata / 3600, testdata / 60, testdata%60);
-		sprintf(buffer_used, "%02d:%02d:%02d", testdata1 / 3600, testdata1 / 60, testdata1 % 60);
-		//testdata--;
-		if (testdata1 % 2) {
-			WM_HideWindow(hchild[id_bottle]);
-		}
-		else {
-			WM_ShowWindow(hchild[id_bottle]);
-		}
-		WM_InvalidateWindow(pMsg->hWin); //使窗口无效，从而进行更新
-		WM_RestartTimer(hTimer, 0);
 		break;
 
 	case WM_PID_STATE_CHANGED:
@@ -270,49 +270,49 @@ void pageShuyeDisplay(WM_MESSAGE *pMsg) {
 		GUI_SetBkColor(GUI_WHITE);
 		GUI_SetFont(&GUI_Font13_1);
 
-		sprintf(tempt, "valume: %f ml", shuyeData[0][0]);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[0][0]);
 		GUI_DispStringAt(tempt, 110, 60.8 + 4.8);
-	//	sprintf(tempt, "valume: %d ml", shuyeData[1][0]);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[1][0]);
 		GUI_DispStringAt(tempt, 110, 119.2 + 4.8);
-	//	sprintf(tempt, "valume: %d ml", shuyeData[2][0]);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[2][0]);
 		GUI_DispStringAt(tempt, 110, 177.6 + 4.8);
-	//	sprintf(tempt, "valume: %d ml", shuyeData[3][0]);
+		sprintf(tempt, "valume: %.1f ml", shuyeData[3][0]);
 		GUI_DispStringAt(tempt, 110, 236 + 4.8);
 
-		sprintf(tempt, "sudu: %f ml/min", shuyeData[0][1]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[0][1]);
 		GUI_DispStringAt(tempt,    90.4, 60.8 + 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[1][1]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[1][1]);
 		GUI_DispStringAt(tempt, 90.4, 119.2+ 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[2][1]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[2][1]);
 		GUI_DispStringAt(tempt, 90.4, 177.6+ 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[3][1]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[3][1]);
 		GUI_DispStringAt(tempt, 90.4, 236+ 22);
 
-		sprintf(tempt, "time: %f min", shuyeData[0][3]);
+		sprintf(tempt, "time: %.1f min", shuyeData[0][3]);
 		GUI_DispStringAt(tempt, 90.4, 60.8 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[1][3]);
+		sprintf(tempt, "time: %.1f min", shuyeData[1][3]);
 		GUI_DispStringAt(tempt, 90.4, 119.2 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[2][3]);
+		sprintf(tempt, "time: %.1f min", shuyeData[2][3]);
 		GUI_DispStringAt(tempt, 90.4, 177.6 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[3][3]);
+		sprintf(tempt, "time: %.1f min", shuyeData[3][3]);
 		GUI_DispStringAt(tempt, 90.4, 236 + 40.8);
 
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[0][2]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[0][2]);
 		GUI_DispStringAt(tempt, 172.8, 60.8 + 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[1][2]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[1][2]);
 		GUI_DispStringAt(tempt, 172.8, 119.2 + 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[2][2]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[2][2]);
 		GUI_DispStringAt(tempt, 172.8, 177.6 + 22);
-	//	sprintf(tempt, "sudu: %d ml/min", shuyeData[3][2]);
+		sprintf(tempt, "sudu: %.1f ml/min", shuyeData[3][2]);
 		GUI_DispStringAt(tempt, 172.8, 236 + 22);
 
-	//	sprintf(tempt, "time: %d min", shuyeData[0][4]);
+		sprintf(tempt, "time: %.1f min", shuyeData[0][4]);
 		GUI_DispStringAt(tempt, 172.8, 60.8 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[1][4]);
+		sprintf(tempt, "time: %.1f min", shuyeData[1][4]);
 		GUI_DispStringAt(tempt, 172.8, 119.2 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[2][4]);
+		sprintf(tempt, "time: %.1f min", shuyeData[2][4]);
 		GUI_DispStringAt(tempt, 172.8, 177.6 + 40.8);
-	//	sprintf(tempt, "time: %d min", shuyeData[3][4]);
+		sprintf(tempt, "time: %.1f min", shuyeData[3][4]);
 		GUI_DispStringAt(tempt, 172.8, 236 + 40.8);
 
 	case WM_PID_STATE_CHANGED:
@@ -381,14 +381,8 @@ void pageShuyeSetting(WM_MESSAGE *pMsg) {
 		GUI_SetFont(&GUI_Font24_1);
 		GUI_DispStringHCenterAt("PRE-SETTING", 120, 40);
 
-		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT1);
-		GUI_SetBkColor(GUI_WHITE);
-		GUI_SetFont(&GUI_Font16_1);
-		GUI_DispStringHCenterAt("ONE", 36, 105);
-		GUI_DispStringHCenterAt("TWO", 36, 156);
-		GUI_DispStringHCenterAt("THREE", 36, 207);
-		GUI_DispStringHCenterAt("FOUR", 36, 258);
 
+		GUI_SetFont(&GUI_Font16_1);
 		GUI_SetColor(GUI_WHITE);
 		GUI_SetBkColor(MYCOLOR_PAGESHUYESETTING_BOTTON_BACKGROUND);
 		GUI_DispStringHCenterAt("BACK", 60, 300);
@@ -597,7 +591,6 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 	unsigned Id;
 	int NCode;
 	char buff[5],c_valume[4];
-	char sDest[10];
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
@@ -635,7 +628,7 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 
 			//初始化数据
 			if (shuyeData[my_index - 1][i] != 0) {
-				sprintf(buff, "%f", shuyeData[my_index - 1][i]);
+				sprintf(buff, "%.1f", shuyeData[my_index - 1][i]);
 			}
 			else {
 				sprintf(buff, "\0", shuyeData[my_index - 1][i]);
@@ -667,7 +660,7 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
 				if (data[1] != 0) {
 					data[3] = data[0] / data[1];
-					sprintf(buff, "%f", data[3]);
+					sprintf(buff, "%.1f", data[3]);
 				}
 				else {
 					sprintf(buff, "%s", "err");
@@ -679,7 +672,7 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 				if (data[3] * data[1] > data[0]) {
 					data[3] = data[0] / data[1];
 					hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
-					sprintf(buff, "%f", data[3]);
+					sprintf(buff, "%.1f", data[3]);
 					EDIT_SetText(hEdit1, buff);
 				}
 			case GUI_ID_EDIT2:
@@ -692,13 +685,13 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 					data[4] = (data[0] - data[1] * data[3]) / data[2];
 				}
 				//hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT1);
-				//sprintf(buff, "%d", data[1]);
+				//sprintf(buff, "%.1f", data[1]);
 				//EDIT_SetText(hEdit1, buff);
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT2);
-				sprintf(buff, "%f", data[2]);
+				sprintf(buff, "%.1f", data[2]);
 				EDIT_SetText(hEdit1, buff);
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT4);
-				sprintf(buff, "%f", data[4]);
+				sprintf(buff, "%.1f", data[4]);
 				EDIT_SetText(hEdit1, buff);
 				//break;
 
@@ -729,7 +722,6 @@ void _cbDialogNumPad(WM_MESSAGE * pMsg) {
 	int      NCode;
 	unsigned Id;
 	int      Pressed;
-	WM_HWIN  hDlg;
 	WM_HWIN  hItem;
 	//int _aKey[] = { GUI_KEY_BACKSPACE, GUI_KEY_TAB, GUI_KEY_LEFT, GUI_KEY_RIGHT };
 	Pressed = 0;
@@ -824,7 +816,6 @@ void _cbEdit(WM_MESSAGE * pMsg) {
 }
 
 void _cbBottle1(WM_MESSAGE *pMsg) {
-	EDIT_Handle btext,timeText1,timeText2,speedText1,speedText2;
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
@@ -844,11 +835,11 @@ void _cbBottle1(WM_MESSAGE *pMsg) {
 		GUI_DispStringAt("min", 210, 50);
 		GUI_DispStringAt("speed:", 125, 85);
 		GUI_DispStringAt("ml/s", 210, 85);
-		btext=EDIT_CreateEx(90, 16, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		timeText1 = EDIT_CreateEx(50, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		timeText2 = EDIT_CreateEx(170, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		speedText1 = EDIT_CreateEx(50, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
-		speedText2 = EDIT_CreateEx(170, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(90, 16, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(50, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(170, 50, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(50, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
+		EDIT_CreateEx(170, 85, 40, 20, pMsg->hWin, WM_CF_SHOW, 0, 0, 4);
 		//WIDGET_SetEffect(btext,&WIDGET_Effect_None);//取消边框
 		//_mCreatSpinBox(90,10,70,20,pMsg->hWin, WM_CF_SHOW,0,0,999);
 		//SPINBOX_SetFont(sbxCubage, &GUI_Font13HB_1);
@@ -883,6 +874,12 @@ void _mCreatSpinBox(int x0,int y0,int xSize,int ySize,GUI_HWIN hParent,int WinFl
 	SPINBOX_SetEdge(sbxCubage, SPINBOX_EDGE_CENTER);
 
 }
-void test_multipage(void) {
-
-}
+//void my_creatBlock(int x0, int y0, int xSize, int ySize, int id, GUI_COLOR color) {
+//	char s[3];
+//	GUI_SetBkColor(color);
+//	GUI_ClearRect(x0, y0, x0 + xSize, y0 + ySize);
+//	GUI_SetColor(GUI_WHITE);
+//	GUI_SetFont(&GUI_Font20_1);
+//	sprintf(s, "%d", id);
+//	GUI_DispStringHCenterAt(s, x0+xSize/2, y0);
+//}
