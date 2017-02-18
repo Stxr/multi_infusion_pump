@@ -4,6 +4,10 @@ char s[5];
 int my_index=0;
 double data[5];
 MULTIPAGE_Handle aMultipage;
+typedef struct {
+	U32 color;
+	int id;
+}mydata;
 static const GUI_WIDGET_CREATE_INFO _aDialogNumPad[] = {
 	//
 	//  Function                 Text      Id					 Px   Py   Dx   Dy
@@ -43,14 +47,8 @@ void MainTask(void) {
 	}
 }
 void W_pageDisplay(void) {
-	WM_HWIN hWnd;
 	my_index = 0;
-	hWnd = WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
-	GUI_Exec();
-	//while (1)
-	//{
-	//	GUI_Delay(20);
-	//}
+	WM_CreateWindow(0, 0, 240, 320, WM_CF_SHOW, pageDisplay, 0);
 }
 void W_pageHome(void) {
 	WM_HWIN hWnd;
@@ -419,19 +417,85 @@ void pageSetting(WM_MESSAGE *pMsg) {
 	}
 
 }
-void pageDisplay(WM_MESSAGE *pMsg) {
-	WM_PID_STATE_CHANGED_INFO  *pState;
+
+void _cbchild1(WM_MESSAGE *pMsg) {
+	mydata data_receive;
+	char id[2];
 	switch (pMsg->MsgId)
 	{
 	case WM_PAINT:
-		//???
+		WM_GetUserData(pMsg->hWin, &data_receive, sizeof(mydata));
+		GUI_SetBkColor(data_receive.color);
+		GUI_Clear();
+		GUI_SetColor(GUI_WHITE);
+		GUI_SetFont(&GUI_Font20_1);
+		sprintf(id, "%d", data_receive.id);
+		GUI_DispStringHCenterAt(id, 9, 0);
+		break;
+	default:
+		WM_DefaultProc(pMsg);
+		break;
+	}
+}
+
+void pageDisplay(WM_MESSAGE *pMsg) {
+	WM_PID_STATE_CHANGED_INFO  *pState;
+  mydata data_send[4] = { { GUI_GREEN ,1 },{ GUI_GREEN ,2 },{ GUI_GREEN ,3 },{ GUI_GREEN ,4 } };
+	mydata data;
+	static WM_HTIMER hTimer;
+	static char buffer_left[20],buffer_used[20],buffer_speed[4];
+	static int id_bottle = 0;
+	static WM_HWIN hchild[4];
+	int speed=0;
+//	int testdata = 0,testdata1=0;
+	switch (pMsg->MsgId)
+	{
+		case WM_TIMER:
+//			if (shuyeData[id_bottle][0] == 0 || (shuyeData[id_bottle][3] == 0 && shuyeData[id_bottle][4] == 0)) {
+//				id_bottle++;
+//				if (id_bottle >= 4) id_bottle = 0;
+//			}
+//			if (shuyeData[id_bottle][3] > 0 || shuyeData[id_bottle][4] > 0) { //剩余输液时间是否为0
+//				testdata1++;
+//				if (shuyeData[id_bottle][3] != 0) {
+	//				testdata = --shuyeData[id_bottle][3];
+//					speed = shuyeData[id_bottle][1];
+//			}
+//			else {
+//				data.color = GUI_BLUE;
+//				data.id = id_bottle+1;
+				//WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
+//				testdata = --shuyeData[id_bottle][4];
+//				speed = shuyeData[id_bottle][2];
+//			}
+//			if (shuyeData[id_bottle][4] == 0 && shuyeData[id_bottle][3]==0) {
+//				data.color = GUI_BLACK;
+//				data.id = id_bottle+1;
+//				//WM_SetUserData(hchild[id_bottle], &data, sizeof(mydata));
+//			}
+//		}
+//		sprintf(buffer_speed, "%d", speed);
+//		sprintf(buffer_left, "%02d:%02d:%02d", testdata / 3600, testdata / 60, testdata%60);
+//		sprintf(buffer_used, "%02d:%02d:%02d", testdata1 / 3600, testdata1 / 60, testdata1 % 60);
+		//testdata--;
+		//if (testdata1 % 2) {
+		//	WM_HideWindow(hchild[id_bottle]);
+		//}
+		//else {
+		//	WM_ShowWindow(hchild[id_bottle]);
+		//}
+		WM_InvalidateWindow(pMsg->hWin); //使窗口无效，从而进行更新
+		WM_RestartTimer(hTimer, 1000);
+		break;
+		case WM_PAINT:
+		//画背景
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
 		GUI_Clear();
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BUTTON);
 		GUI_ClearRect(0, 296, 240, 320);
 		GUI_SetColor(GUI_WHITE);
 		GUI_DrawVLine(120, 296, 320);
-		//??
+		//写字
 		GUI_SetFont(&GUI_Font24_1);
 		GUI_SetColor(MYCOLOR_PAGEDISPLAY_TEXT1);
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BACKGROUND);
@@ -442,23 +506,24 @@ void pageDisplay(WM_MESSAGE *pMsg) {
 		GUI_DispStringAt("Used", 150, 182);
 		GUI_DispStringAt("Left", 150, 236);
 		GUI_SetColor(MYCOLOR_PAGEDISPLAY_TEXT3);
-		GUI_DispStringHCenterAt("00:16:26", 175, 206);
-		GUI_DispStringHCenterAt("00:35:51", 175, 262);
-		GUI_DispStringAt("20", 126, 56);//????????
-										//????
+		GUI_DispStringHCenterAt(buffer_used, 175, 206);
+		GUI_DispStringHCenterAt(buffer_left, 175, 262);
+		GUI_SetFont(&GUI_FontD36x48);
+		GUI_DispStringAt(buffer_speed, 126, 56);//需要大一点的字体
+										//按钮字体
 		GUI_SetFont(&GUI_Font16_1);
 		GUI_SetColor(GUI_WHITE);
 		GUI_SetBkColor(MYCOLOR_PAGEDISPLAY_BUTTON);
 		GUI_DispStringHCenterAt("BACK", 60, 300);
 		GUI_DispStringHCenterAt("PAUSE", 180, 300);
 
-		//display
-//		GUI_SetColor(MYCOLOR_PAGESHUYESETTING_CONTENT_TEXT2);
-//		for (int i = 0; i < 4; i++) {
-//			for (int j = 0; j < 5; j++) {
-//				GUI_DispDecAt(shuyeData[i][j], 30*j, 30*i, 3);
-//			}
-//		}
+		hTimer = WM_CreateTimer(pMsg->hWin, 0, 1000, 0);
+		for (int i = 0; i < 4; i++) {
+			if (shuyeData[i][0] == 0)continue;//如果容量为0，则不创建
+			hchild[i] = WM_CreateWindowAsChild(129 + i * 26, 126, 18, 18, pMsg->hWin, WM_CF_SHOW, _cbchild1, sizeof(mydata));
+			WM_SetUserData(hchild[i], &data_send[i], sizeof(mydata));
+		}
+		break;
 
 
 	case WM_PID_STATE_CHANGED:
