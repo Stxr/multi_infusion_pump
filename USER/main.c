@@ -222,12 +222,12 @@ void start_task(void *p_arg)
 void emwindemo_task(void *pdata){
 	//OS_ERR err;
 //	GUI_MEMDEV_Handle hMem;
-	GUI_PID_STATE touchState;//触摸状态
-	FIL fp;
-	char *buff;
-	unsigned int num;
-	buff=(char*)mymalloc(3840);
-	f_open(&fp,(const TCHAR*)"0:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//打开文件，将文件句柄放在fp中
+//	GUI_PID_STATE touchState;//触摸状态
+//	FIL fp;
+//	char *buff;
+//	unsigned int num;
+//	buff=(char*)mymalloc(3840);
+//	f_open(&fp,(const TCHAR*)"0:/SYSTEM/SYSICO/systemsetting.bin",FA_READ);//打开文件，将文件句柄放在fp中
 
 //	GUI_SetBkColor(GUI_BLUE);
 //	GUI_SetColor(GUI_RED);
@@ -257,7 +257,7 @@ void emwindemo_task(void *pdata){
 	//dispbmpex("0:/SYSTEM/SYSICO/systemsetting.bmp",0,0,0,1,1);
 	//GUI_MEMDEV_Select(0);
 	//GUI_MEMDEV_CopyToLCDAt(hMem,0,0);
-	GUI_Delay(1000);
+//	GUI_Delay(1000);
 		//GUI_Clear();
 }
 

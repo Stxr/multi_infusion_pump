@@ -2676,7 +2676,7 @@ void TFTLCD_Init(void)
 		LCD_WriteReg(0X07,0X0033);   
 		LCD_WriteReg(0X07,0X0133);   
 	}	
-	LCD_Display_Dir(0);		 	//默认为横屏
+	LCD_Display_Dir(0);		 	//1为横屏，0为竖屏
 	LCD_LED=1;					//点亮背光
 	LCD_Clear(WHITE);
 }  		  
