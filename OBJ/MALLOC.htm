@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\MALLOC.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\MALLOC.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Mon Feb 20 00:26:40 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Mon Feb 20 18:17:00 2017
 <BR><P>
 <H3>Maximum Stack Usage =       1276 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -5628,12 +5628,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usmart_cmd_rec
 </UL>
 
-<P><STRONG><a name="[35b]"></a>_cbBottle4</STRONG> (Thumb, 680 bytes, Stack size 40 bytes, mypage.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 420 + Unknown Stack Size
+<P><STRONG><a name="[35b]"></a>_cbBottle4</STRONG> (Thumb, 690 bytes, Stack size 32 bytes, mypage.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 412 + Unknown Stack Size
 <LI>Call Chain = _cbBottle4 &rArr; WM_GetDialogItem &rArr; _GetDialogItem &rArr;  _GetDialogItem (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[191]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
+<LI><a href="#[313]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmpeq
 <LI><a href="#[36a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 <LI><a href="#[362]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[369]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
@@ -5672,7 +5673,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[384]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;W_pageShuyeSetting
 </UL>
 
-<P><STRONG><a name="[87]"></a>_cbDialogNumPad</STRONG> (Thumb, 118 bytes, Stack size 24 bytes, mypage.o(.text))
+<P><STRONG><a name="[87]"></a>_cbDialogNumPad</STRONG> (Thumb, 306 bytes, Stack size 24 bytes, mypage.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 404 + Unknown Stack Size
 <LI>Call Chain = _cbDialogNumPad &rArr; WM_GetDialogItem &rArr; _GetDialogItem &rArr;  _GetDialogItem (Cycle)
 </UL>
@@ -5685,7 +5686,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> mypage.o(.text)
 </UL>
-<P><STRONG><a name="[376]"></a>_cbchild1</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, mypage.o(.text))
+<P><STRONG><a name="[376]"></a>_cbchild1</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, mypage.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 308 + Unknown Stack Size
 <LI>Call Chain = _cbchild1 &rArr; GUI_DispStringHCenterAt &rArr; GUI_DispStringAt &rArr; GUI_DispString &rArr; GUI__GetLineDistX &rArr; GUI__GetOverlap &rArr; GUI_GetCharDistXEx &rArr; GUI_Lock &rArr; GUI_X_Lock &rArr; OSSemPend &rArr; OS_Pend &rArr; OS_TaskBlock &rArr; OS_TickListInsert
 </UL>
@@ -5700,7 +5701,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> mypage.o(.text)
 </UL>
-<P><STRONG><a name="[378]"></a>pageDisplay</STRONG> (Thumb, 832 bytes, Stack size 56 bytes, mypage.o(.text))
+<P><STRONG><a name="[378]"></a>pageDisplay</STRONG> (Thumb, 830 bytes, Stack size 56 bytes, mypage.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1276 + Unknown Stack Size
 <LI>Call Chain = pageDisplay &rArr; W_pageShuyeSetting &rArr; createMultipage &rArr; MULTIPAGE_AddPage &rArr; MULTIPAGE_SelectPage &rArr; MULTIPAGE__UpdatePositions &rArr; _AddScrollbar &rArr; WM_SetSize &rArr; WM_ResizeWindow &rArr; WM__UpdateChildPositions &rArr;  WM_ResizeWindow (Cycle)
 </UL>
@@ -6239,8 +6240,9 @@ Global Symbols
 <LI><a href="#[5e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
 
-<P><STRONG><a name="[313]"></a>__aeabi_cfcmpeq</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, cfcmple.o(.text), UNUSED)
+<P><STRONG><a name="[313]"></a>__aeabi_cfcmpeq</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, cfcmple.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[312]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fupd_prog
+<LI><a href="#[35b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_cbBottle4
 </UL>
 
 <P><STRONG><a name="[6a4]"></a>__aeabi_cfcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfcmple.o(.text), UNUSED)
@@ -6973,8 +6975,8 @@ Global Symbols
 <LI> f16_1.o(.constdata)
 <LI> f16b_1.o(.constdata)
 <LI> f20_1.o(.constdata)
+<LI> f24b_1.o(.constdata)
 <LI> f32_ascii.o(.constdata)
-<LI> f32b_1.o(.constdata)
 <LI> f13_1.o(.constdata)
 </UL>
 <P><STRONG><a name="[db]"></a>GUIPROP_GetCharDistX</STRONG> (Thumb, 60 bytes, Stack size 12 bytes, gui_charp.o(i.GUIPROP_GetCharDistX))
@@ -6988,8 +6990,8 @@ Global Symbols
 <LI> f16_1.o(.constdata)
 <LI> f16b_1.o(.constdata)
 <LI> f20_1.o(.constdata)
+<LI> f24b_1.o(.constdata)
 <LI> f32_ascii.o(.constdata)
-<LI> f32b_1.o(.constdata)
 <LI> f13_1.o(.constdata)
 </UL>
 <P><STRONG><a name="[dc]"></a>GUIPROP_GetFontInfo</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, gui_charp.o(i.GUIPROP_GetFontInfo))
@@ -6999,8 +7001,8 @@ Global Symbols
 <LI> f16_1.o(.constdata)
 <LI> f16b_1.o(.constdata)
 <LI> f20_1.o(.constdata)
+<LI> f24b_1.o(.constdata)
 <LI> f32_ascii.o(.constdata)
-<LI> f32b_1.o(.constdata)
 <LI> f13_1.o(.constdata)
 </UL>
 <P><STRONG><a name="[dd]"></a>GUIPROP_IsInFont</STRONG> (Thumb, 16 bytes, Stack size 4 bytes, gui_charp.o(i.GUIPROP_IsInFont))
@@ -7014,8 +7016,8 @@ Global Symbols
 <LI> f16_1.o(.constdata)
 <LI> f16b_1.o(.constdata)
 <LI> f20_1.o(.constdata)
+<LI> f24b_1.o(.constdata)
 <LI> f32_ascii.o(.constdata)
-<LI> f32b_1.o(.constdata)
 <LI> f13_1.o(.constdata)
 </UL>
 <P><STRONG><a name="[40e]"></a>GUIPROP__FindChar</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, gui_charp.o(i.GUIPROP__FindChar))

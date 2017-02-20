@@ -629,7 +629,7 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 		for (int i = 0; i < 5; i++) {
 			hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0 + i);
 			if (i == 0) {
-				EDIT_SetFont(hEdit, &GUI_Font32B_1);
+				EDIT_SetFont(hEdit, &GUI_Font24B_1);
 			}
 			EDIT_SetMaxLen(hEdit, 4);
 			WIDGET_SetEffect(hEdit, &WIDGET_Effect_None);
@@ -645,11 +645,11 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 			//初始化数据
 			if (shuyeData[my_index - 1][i] != 0) {
 				sprintf(buff, "%.1f", shuyeData[my_index - 1][i]);
+				EDIT_SetText(hEdit, buff);
 			}
 			else {
-				sprintf(buff, "\0", shuyeData[my_index - 1][i]);
+				EDIT_SetText(hEdit, "\0");
 			}
-			EDIT_SetText(hEdit, buff);
 		}
 		MULTIPAGE_GetSelection(aMultipage);
 		break;
@@ -659,9 +659,9 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 		switch (NCode)
 		{
 		case WM_NOTIFICATION_VALUE_CHANGED:
-			hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
-			EDIT_GetText(hEdit1, c_valume, 4);
-			sscanf(c_valume, "%f", &data[0]);
+			//hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
+			//EDIT_GetText(hEdit1, c_valume, 4);
+			//sscanf(c_valume, "%f", &data[0]);
 			for (int i = 0; i < 5; i++) {   // save the data to data[5]
 				hEdit = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0+i);
 				EDIT_GetText(hEdit, buff, 5);
@@ -670,9 +670,12 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 			switch (Id)
 			{
 			case GUI_ID_EDIT0:
-				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0);
-				EDIT_SetFont(hEdit1, &GUI_Font16_1);
 				data[1] = data[2] = data[3] = data[4] = 0;
+				for (int i = 1; i <= 4; i++) {
+					hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT0+i);
+					EDIT_SetText(hEdit1, "\0");
+					data[i] = 0;
+				}
 				break;
 			case GUI_ID_EDIT1:
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
@@ -686,32 +689,38 @@ void _cbBottle4(WM_MESSAGE *pMsg) {
 				EDIT_SetText(hEdit1, buff);
 				//break;
 			case GUI_ID_EDIT3:
-				data[2] = 5;
-				if (data[3] * data[1] > data[0]) {
+				if (data[3] * data[1] > data[0]) {//超出范围了
 					data[3] = data[0] / data[1];
 					hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT3);
 					sprintf(buff, "%.1f", data[3]);
 					EDIT_SetText(hEdit1, buff);
+
 				}
-			case GUI_ID_EDIT2:
-				if (data[0] - data[1] * data[3] <= 0) {
+				else if (data[1] * data[3] == data[0] ) {//因为上面改变了data[3]，所以会自动相等
 					data[4] = 0;
 					data[2] = 0;
 					//data[1] = data[0] / data[3];
 				}
-				else {
+				else {//改小值了
+					data[2] = 5;//默认是5ml/min
 					data[4] = (data[0] - data[1] * data[3]) / data[2];
 				}
-				//hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT1);
-				//sprintf(buff, "%.1f", data[1]);
-				//EDIT_SetText(hEdit1, buff);
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT2);
 				sprintf(buff, "%.1f", data[2]);
 				EDIT_SetText(hEdit1, buff);
+			case GUI_ID_EDIT2:
+				if (data[2] != 0) {
+					data[4] = (data[0] - data[1] * data[3]) / data[2];
+				}
 				hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT4);
 				sprintf(buff, "%.1f", data[4]);
 				EDIT_SetText(hEdit1, buff);
-				//break;
+				//hEdit1 = WM_GetDialogItem(pMsg->hWin, GUI_ID_EDIT1);
+				//sprintf(buff, "%.1f", data[1]);
+				//EDIT_SetText(hEdit1, buff);				
+			case GUI_ID_EDIT4:
+
+				break;
 
 
 			default:
